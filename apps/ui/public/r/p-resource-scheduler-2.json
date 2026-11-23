@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "p-resource-scheduler-2",
+  "description": "Weekly on-call rota with night shifts and time off",
+  "registryDependencies": [
+    "@coss/resource-scheduler"
+  ],
+  "files": [
+    {
+      "path": "registry/default/particles/p-resource-scheduler-2.tsx",
+      "content": "\"use client\";\n\nimport { addDays, addHours, startOfWeek } from \"date-fns\";\nimport { useEffect, useState } from \"react\";\nimport {\n  ResourceScheduler,\n  type SchedulerBooking,\n  type SchedulerResource,\n} from \"@/registry/default/ui/resource-scheduler\";\n\nfunction sampleWeek(monday: Date): {\n  team: SchedulerResource[];\n  shifts: SchedulerBooking[];\n} {\n  const at = (day: number, hour: number): Date =>\n    addHours(addDays(monday, day), hour);\n  return {\n    shifts: [\n      {\n        end: at(0, 17),\n        id: \"s1\",\n        resourceId: \"mark\",\n        start: at(0, 9),\n        title: \"Primary\",\n      },\n      {\n        end: at(1, 9),\n        id: \"s2\",\n        resourceId: \"nadia\",\n        start: at(0, 17),\n        title: \"Night\",\n      },\n      {\n        end: at(1, 17),\n        id: \"s3\",\n        resourceId: \"eli\",\n        start: at(1, 9),\n        title: \"Primary\",\n      },\n      {\n        end: at(2, 9),\n        id: \"s4\",\n        resourceId: \"priya\",\n        start: at(1, 17),\n        title: \"Night\",\n      },\n      {\n        end: at(2, 17),\n        id: \"s5\",\n        resourceId: \"nadia\",\n        start: at(2, 9),\n        title: \"Primary\",\n      },\n      {\n        end: at(3, 9),\n        id: \"s6\",\n        resourceId: \"mark\",\n        start: at(2, 17),\n        title: \"Night\",\n      },\n      {\n        color: \"red\",\n        end: at(4, 9),\n        id: \"s7\",\n        resourceId: \"priya\",\n        start: at(3, 9),\n        title: \"Incident duty\",\n      },\n      {\n        end: at(4, 17),\n        id: \"s8\",\n        resourceId: \"mark\",\n        start: at(4, 9),\n        title: \"Primary\",\n      },\n      {\n        end: at(7, 0),\n        id: \"s9\",\n        resourceId: \"nadia\",\n        start: at(5, 0),\n        title: \"Weekend on call\",\n      },\n    ],\n    team: [\n      {\n        color: \"blue\",\n        description: \"Backend\",\n        id: \"mark\",\n        image:\n          \"https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=96&h=96&dpr=2&q=80\",\n        name: \"Mark Andersson\",\n      },\n      {\n        color: \"violet\",\n        description: \"Frontend\",\n        id: \"eli\",\n        image:\n          \"https://images.unsplash.com/photo-1655874819398-c6dfbec68ac7?w=96&h=96&dpr=2&q=80\",\n        name: \"Eli Wren\",\n        unavailable: [{ end: at(5, 0), reason: \"Vacation\", start: at(3, 0) }],\n      },\n      {\n        color: \"teal\",\n        description: \"Platform\",\n        id: \"nadia\",\n        image:\n          \"https://images.unsplash.com/photo-1628157588553-5eeea00af15c?w=96&h=96&dpr=2&q=80\",\n        name: \"Nadia Ekman\",\n      },\n      {\n        color: \"amber\",\n        description: \"Support\",\n        id: \"priya\",\n        name: \"Priya Shah\",\n      },\n    ],\n  };\n}\n\nexport default function Particle() {\n  const [today, setToday] = useState<Date | null>(null);\n  const [team, setTeam] = useState<SchedulerResource[]>([]);\n  const [shifts, setShifts] = useState<SchedulerBooking[]>([]);\n\n  // Build the sample week on the client, so it always shows this week.\n  useEffect(() => {\n    const now = new Date();\n    const sample = sampleWeek(startOfWeek(now, { weekStartsOn: 1 }));\n    setToday(now);\n    setTeam(sample.team);\n    setShifts(sample.shifts);\n  }, []);\n\n  if (!today) return <div className=\"h-[24rem] w-full rounded-xl border\" />;\n\n  return (\n    <ResourceScheduler\n      bookings={shifts}\n      className=\"w-full\"\n      defaultDate={today}\n      defaultView=\"week\"\n      labels={{ newBooking: \"Add shift\", resources: \"People\" }}\n      onBookingsChange={setShifts}\n      resources={team}\n      stepMinutes={60}\n      title=\"On-call rota\"\n    />\n  );\n}\n",
+      "type": "registry:block"
+    }
+  ],
+  "meta": {
+    "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-6xl",
+    "colSpan": 2
+  },
+  "categories": [
+    "resource scheduler"
+  ],
+  "type": "registry:block"
+}

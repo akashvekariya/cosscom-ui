@@ -6028,4 +6028,112 @@ export const particles: ParticleItem[] = [
     registryDependencies: ["@coss/button", "@coss/group", "@coss/tooltip"],
     type: "registry:block",
   },
+  {
+    categories: categories("event calendar", "calendar", "checkbox"),
+    description:
+      "Team calendar with a mini month, calendar toggles and a week view",
+    files: [
+      { path: "particles/p-event-calendar-1.tsx", type: "registry:block" },
+    ],
+    meta: {
+      className:
+        "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-6xl",
+      colSpan: 2,
+    },
+    name: "p-event-calendar-1",
+    registryDependencies: [
+      "@coss/calendar",
+      "@coss/checkbox",
+      "@coss/event-calendar",
+      "@coss/event-colors",
+      "@coss/label",
+    ],
+    type: "registry:block",
+  },
+  {
+    categories: categories("event calendar", "badge"),
+    description:
+      "Content calendar by channel with drafts and locked published posts",
+    files: [
+      { path: "particles/p-event-calendar-2.tsx", type: "registry:block" },
+    ],
+    meta: {
+      className:
+        "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-6xl",
+      colSpan: 2,
+    },
+    name: "p-event-calendar-2",
+    registryDependencies: [
+      "@coss/badge",
+      "@coss/event-calendar",
+      "@coss/event-colors",
+    ],
+    type: "registry:block",
+  },
+  {
+    categories: categories("gantt chart"),
+    description:
+      "Project plan with groups, progress, milestones and dependencies",
+    files: [{ path: "particles/p-gantt-chart-1.tsx", type: "registry:block" }],
+    meta: {
+      className:
+        "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-6xl",
+      colSpan: 2,
+    },
+    name: "p-gantt-chart-1",
+    registryDependencies: ["@coss/gantt-chart"],
+    type: "registry:block",
+  },
+  {
+    categories: categories("resource scheduler"),
+    description:
+      "Meeting room booking with seats, blocked times and no double booking",
+    files: [
+      { path: "particles/p-resource-scheduler-1.tsx", type: "registry:block" },
+    ],
+    meta: {
+      className:
+        "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-6xl",
+      colSpan: 2,
+    },
+    name: "p-resource-scheduler-1",
+    registryDependencies: ["@coss/resource-scheduler"],
+    type: "registry:block",
+  },
+  {
+    categories: categories("resource scheduler"),
+    description: "Weekly on-call rota with night shifts and time off",
+    files: [
+      { path: "particles/p-resource-scheduler-2.tsx", type: "registry:block" },
+    ],
+    meta: {
+      className:
+        "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-6xl",
+      colSpan: 2,
+    },
+    name: "p-resource-scheduler-2",
+    registryDependencies: ["@coss/resource-scheduler"],
+    type: "registry:block",
+  },
+  {
+    categories: categories("resource scheduler", "avatar", "badge"),
+    description:
+      "Interview loop for a candidate across interviewers and stages",
+    files: [
+      { path: "particles/p-resource-scheduler-3.tsx", type: "registry:block" },
+    ],
+    meta: {
+      className:
+        "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-6xl",
+      colSpan: 2,
+    },
+    name: "p-resource-scheduler-3",
+    registryDependencies: [
+      "@coss/avatar",
+      "@coss/badge",
+      "@coss/event-colors",
+      "@coss/resource-scheduler",
+    ],
+    type: "registry:block",
+  },
 ];

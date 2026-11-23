@@ -26,6 +26,11 @@ export const lib: Registry["items"] = [
     type: "registry:lib",
   },
   {
+    files: [{ path: "lib/event-colors.ts", type: "registry:lib" }],
+    name: "event-colors",
+    type: "registry:lib",
+  },
+  {
     dependencies: ["clsx", "tailwind-merge"],
     files: [
       {

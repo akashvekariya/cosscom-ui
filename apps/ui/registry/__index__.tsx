@@ -277,6 +277,60 @@ export const Index: Record<string, any> = {
     categories: undefined,
     meta: undefined,
   },
+  "event-calendar": {
+    name: "event-calendar",
+    description: "",
+    type: "registry:ui",
+    registryDependencies: ["@coss/avatar","@coss/badge","@coss/button","@coss/dialog","@coss/event-colors","@coss/field","@coss/form","@coss/input","@coss/label","@coss/menu","@coss/popover","@coss/radio-group","@coss/segmented-control","@coss/select","@coss/switch","@coss/textarea","@coss/use-media-query","@coss/use-time-grid"],
+    files: [{
+      path: "registry/default/ui/event-calendar.tsx",
+      type: "registry:ui",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/ui/event-calendar.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
+  "gantt-chart": {
+    name: "gantt-chart",
+    description: "",
+    type: "registry:ui",
+    registryDependencies: ["@coss/avatar","@coss/badge","@coss/button","@coss/dialog","@coss/event-colors","@coss/field","@coss/form","@coss/input","@coss/label","@coss/popover","@coss/radio-group","@coss/segmented-control","@coss/select","@coss/slider","@coss/switch","@coss/use-media-query","@coss/use-time-grid"],
+    files: [{
+      path: "registry/default/ui/gantt-chart.tsx",
+      type: "registry:ui",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/ui/gantt-chart.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
+  "resource-scheduler": {
+    name: "resource-scheduler",
+    description: "",
+    type: "registry:ui",
+    registryDependencies: ["@coss/avatar","@coss/badge","@coss/button","@coss/dialog","@coss/event-colors","@coss/field","@coss/form","@coss/input","@coss/popover","@coss/radio-group","@coss/segmented-control","@coss/select","@coss/textarea","@coss/use-media-query","@coss/use-time-grid"],
+    files: [{
+      path: "registry/default/ui/resource-scheduler.tsx",
+      type: "registry:ui",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/ui/resource-scheduler.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
   "command": {
     name: "command",
     description: "",
@@ -10715,6 +10769,114 @@ export const Index: Record<string, any> = {
     categories: ["tooltip"],
     meta: undefined,
   },
+  "p-event-calendar-1": {
+    name: "p-event-calendar-1",
+    description: "Team calendar with a mini month, calendar toggles and a week view",
+    type: "registry:block",
+    registryDependencies: ["@coss/calendar","@coss/checkbox","@coss/event-calendar","@coss/event-colors","@coss/label"],
+    files: [{
+      path: "registry/default/particles/p-event-calendar-1.tsx",
+      type: "registry:block",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/particles/p-event-calendar-1.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: ["event calendar","calendar","checkbox"],
+    meta: {"className":"**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-6xl","colSpan":2},
+  },
+  "p-event-calendar-2": {
+    name: "p-event-calendar-2",
+    description: "Content calendar by channel with drafts and locked published posts",
+    type: "registry:block",
+    registryDependencies: ["@coss/badge","@coss/event-calendar","@coss/event-colors"],
+    files: [{
+      path: "registry/default/particles/p-event-calendar-2.tsx",
+      type: "registry:block",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/particles/p-event-calendar-2.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: ["event calendar","badge"],
+    meta: {"className":"**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-6xl","colSpan":2},
+  },
+  "p-gantt-chart-1": {
+    name: "p-gantt-chart-1",
+    description: "Project plan with groups, progress, milestones and dependencies",
+    type: "registry:block",
+    registryDependencies: ["@coss/gantt-chart"],
+    files: [{
+      path: "registry/default/particles/p-gantt-chart-1.tsx",
+      type: "registry:block",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/particles/p-gantt-chart-1.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: ["gantt chart"],
+    meta: {"className":"**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-6xl","colSpan":2},
+  },
+  "p-resource-scheduler-1": {
+    name: "p-resource-scheduler-1",
+    description: "Meeting room booking with seats, blocked times and no double booking",
+    type: "registry:block",
+    registryDependencies: ["@coss/resource-scheduler"],
+    files: [{
+      path: "registry/default/particles/p-resource-scheduler-1.tsx",
+      type: "registry:block",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/particles/p-resource-scheduler-1.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: ["resource scheduler"],
+    meta: {"className":"**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-6xl","colSpan":2},
+  },
+  "p-resource-scheduler-2": {
+    name: "p-resource-scheduler-2",
+    description: "Weekly on-call rota with night shifts and time off",
+    type: "registry:block",
+    registryDependencies: ["@coss/resource-scheduler"],
+    files: [{
+      path: "registry/default/particles/p-resource-scheduler-2.tsx",
+      type: "registry:block",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/particles/p-resource-scheduler-2.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: ["resource scheduler"],
+    meta: {"className":"**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-6xl","colSpan":2},
+  },
+  "p-resource-scheduler-3": {
+    name: "p-resource-scheduler-3",
+    description: "Interview loop for a candidate across interviewers and stages",
+    type: "registry:block",
+    registryDependencies: ["@coss/avatar","@coss/badge","@coss/event-colors","@coss/resource-scheduler"],
+    files: [{
+      path: "registry/default/particles/p-resource-scheduler-3.tsx",
+      type: "registry:block",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/particles/p-resource-scheduler-3.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: ["resource scheduler","avatar","badge"],
+    meta: {"className":"**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-6xl","colSpan":2},
+  },
   "fonts": {
     name: "fonts",
     description: "",
@@ -10791,6 +10953,24 @@ export const Index: Record<string, any> = {
     }],
     component: React.lazy(async () => {
       const mod = await import("@/registry/default/lib/composer-query.ts")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
+  "event-colors": {
+    name: "event-colors",
+    description: "",
+    type: "registry:lib",
+    registryDependencies: undefined,
+    files: [{
+      path: "registry/default/lib/event-colors.ts",
+      type: "registry:lib",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/lib/event-colors.ts")
       const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
       return { default: mod.default || mod[exportName] }
     }),
@@ -10935,6 +11115,24 @@ export const Index: Record<string, any> = {
     }],
     component: React.lazy(async () => {
       const mod = await import("@/registry/default/hooks/use-copy-to-clipboard.ts")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
+  "use-time-grid": {
+    name: "use-time-grid",
+    description: "",
+    type: "registry:hook",
+    registryDependencies: undefined,
+    files: [{
+      path: "registry/default/hooks/use-time-grid.ts",
+      type: "registry:hook",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/hooks/use-time-grid.ts")
       const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
       return { default: mod.default || mod[exportName] }
     }),

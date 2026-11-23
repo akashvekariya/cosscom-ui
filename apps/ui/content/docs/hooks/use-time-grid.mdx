@@ -1,0 +1,299 @@
+---
+title: useTimeGrid
+description: Place items on lanes of time, then move, resize and create them by drag or keyboard.
+---
+
+A React hook for calendars, schedules and gantt charts. You describe lanes of time, such as the days of a week or the rows of a project plan, and items with a start and an end. The hook works out where each item sits, puts overlapping items side by side, and lets people move an item, stretch it from either edge, or draw a new one on empty space. It works with mouse, touch and keyboard, announces every change to screen readers, and renders nothing itself: you spread its props on your own elements.
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTab value="cli">CLI</TabsTab>
+  <TabsTab value="manual">Manual</TabsTab>
+</TabsList>
+<TabsPanel value="cli">
+
+```bash
+npx shadcn@latest add @coss/use-time-grid
+```
+
+</TabsPanel>
+
+<TabsPanel value="manual">
+
+<Steps>
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name="use-time-grid" title="hooks/use-time-grid.ts" />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsPanel>
+
+</CodeTabs>
+
+## Usage
+
+### Week view
+
+Each day is a lane that runs from the top of the day to the bottom. Items without a `lane` show in whichever days their time covers, so an event that runs past midnight is cut into two pieces.
+
+```tsx
+import { addDays } from "date-fns";
+import { useTimeGrid } from "@/hooks/use-time-grid";
+
+const lanes = days.map((day) => ({
+  id: day.toISOString(),
+  start: day,
+  end: addDays(day, 1),
+}));
+
+function Week() {
+  const [events, setEvents] = useState(initialEvents);
+  const grid = useTimeGrid({
+    lanes,
+    value: events,
+    onValueChange: setEvents,
+    getItemLabel: (event) => event.title,
+  });
+
+  return (
+    <div className="grid grid-cols-7">
+      {lanes.map((lane) => (
+        <div key={lane.id} className="relative h-[960px]" {...grid.getLaneProps(lane.id)}>
+          {grid.getSegments(lane.id).map((segment) => (
+            <div key={`${segment.id}:${segment.lane}`} {...grid.getItemProps(segment)}>
+              {segment.item.title}
+              <div className="absolute inset-x-0 bottom-0 h-2" {...grid.getResizeHandleProps(segment, "end")} />
+            </div>
+          ))}
+        </div>
+      ))}
+      <div {...grid.getAnnouncerProps()} />
+    </div>
+  );
+}
+```
+
+Lanes need `position: relative`, because items are placed inside them with absolute positions. A lane does not have to start at midnight: a lane from 8:00 to 18:00 shows a working day, and items outside it are cut off.
+
+`onValueChange` runs once per change, on drop. While dragging, `grid.value` and `grid.getSegments` already show the item at its new time.
+
+### Drawing new items
+
+Pass `onCreate` to let people draw a range on empty space. The hook shows the range while drawing through `getDraftSegments`, and hands it to you on release. Adding the item is up to you.
+
+```tsx
+const grid = useTimeGrid({
+  lanes,
+  value: events,
+  onValueChange: setEvents,
+  onCreate: (range) =>
+    setEvents((current) => [...current, { id: crypto.randomUUID(), title: "New event", ...range }]),
+});
+
+{grid.getDraftSegments(lane.id).map((segment) => (
+  <div key={segment.lane} className="rounded-md border-2 border-dashed" style={grid.getSegmentStyle(segment)} />
+))}
+```
+
+### Gantt chart
+
+Set `orientation` to `"horizontal"` so time runs from left to right. In a gantt chart every row covers the same dates, so give each item a `lane` to say which row it belongs to, and set `lockLane` so bars stay in their row. Snap to whole days with `step` and `snap`.
+
+```tsx
+import { addHours, startOfDay } from "date-fns";
+
+const DAY = 86_400_000;
+
+const grid = useTimeGrid({
+  lanes: tasks.map((task) => ({ id: task.id, start: projectStart, end: projectEnd })),
+  value: bars,
+  onValueChange: setBars,
+  orientation: "horizontal",
+  lockLane: true,
+  step: DAY,
+  minDuration: DAY,
+  snap: (time) => startOfDay(addHours(time, 12)).getTime(),
+});
+```
+
+`snap` rounds to the nearest midnight, which stays right on days with a daylight saving change. An item whose start equals its end is a milestone: its segment has a `size` of 0, so draw a marker at its `offset`.
+
+### Bookings across rooms
+
+Rows that share the same time, such as rooms or people, work like a gantt chart without `lockLane`: an item can be dragged to another row. Use `canChange` to refuse a change, for example a double booking. The item then gets `data-refused`, the cursor shows that it is not allowed, and the change is undone on drop.
+
+```tsx
+const grid = useTimeGrid({
+  lanes: rooms.map((room) => ({ id: room.id, start: dayStart, end: dayEnd })),
+  value: bookings,
+  onValueChange: setBookings,
+  orientation: "horizontal",
+  step: 30 * 60_000,
+  canChange: ({ item, to }) =>
+    !bookings.some(
+      (booking) =>
+        booking.id !== item.id &&
+        booking.lane === to.lane &&
+        booking.start < to.end &&
+        booking.end > to.start,
+    ),
+});
+```
+
+### Month view
+
+Make each week a horizontal lane and store events as whole days, with `end` at the midnight after the last day. Set `overlap` to `"stack"` so events sit in rows of a fixed height under the day numbers, and set that height with the `--time-grid-track-size` CSS variable on the lane.
+
+```tsx
+const grid = useTimeGrid({
+  lanes: weeks.map((week) => ({ id: week.id, start: week.start, end: addDays(week.start, 7) })),
+  value: events,
+  onValueChange: setEvents,
+  orientation: "horizontal",
+  overlap: "stack",
+  step: DAY,
+  minDuration: DAY,
+  snap: (time) => startOfDay(addHours(time, 12)).getTime(),
+});
+
+<div className="absolute inset-x-0 top-6 bottom-0 [--time-grid-track-size:--spacing(5.5)]" {...grid.getLaneProps(week.id)}>
+  {grid.getSegments(week.id).filter((segment) => segment.track < 3).map(...)}
+</div>
+```
+
+Each segment has a `track`. Hide segments from track 3 on and show a "+2 more" link instead. Dragging an event up or down moves it by a week.
+
+## Layout
+
+`getItemProps` places each piece with absolute positions in percent, so the grid resizes freely:
+
+- Along the lane, from `offset` and `size`.
+- Across the lane, with `overlap: "split"` (default), overlapping items share the width (or height) of the lane. With `overlap: "stack"`, each takes `--time-grid-track-size` (1.5rem by default).
+
+The style also sets `--time-grid-track` and `--time-grid-tracks`. Add padding to the item element for gaps, and put the visible card inside it. Use `getSegmentStyle` to place anything else, such as a placeholder.
+
+## Interaction
+
+| Input | Behavior |
+|-------|----------|
+| Mouse or pen | Drag an item to move it, drag a resize handle to change its start or end, drag on empty space to draw a new item. A drag starts after the pointer moves 5px, so clicks still work |
+| Touch | Press and hold for 250ms, then drag. A quick swipe scrolls as usual |
+| `Space` or `Enter` | Pick up the focused item, or drop it |
+| Arrow keys along the lane | Move the picked-up item one step earlier or later |
+| `Shift` + arrow keys | Change its end |
+| `Alt` + arrow keys | Change its start |
+| Arrow keys across lanes | Move it to the previous or next lane: the same time on another day, or another row |
+| `Escape` | Cancel and put the item back |
+
+Dragging near the edge of a scrollable container or of the page scrolls it. Set `autoScroll` to `false` to turn this off. Presses on links, buttons and form fields inside an item do not start a drag; add `data-time-grid-ignore` to any other element that should not. In right-to-left layouts, horizontal lanes run from right to left and the arrow keys are mirrored.
+
+## Accessibility
+
+Each item is focusable and described by the keyboard instructions. An item cut across several lanes is one tab stop. Every pick-up, move, resize, drop, cancel and refused change is announced, for example "Moved Design review to Nov 24, 2026, 10:00 – 11:00 AM." Render `getAnnouncerProps` once so screen readers hear these messages.
+
+Name items and lanes with `getItemLabel` and `getLaneLabel`, format times with `formatRange`, translate the instructions with `instructions`, and replace the messages with `getAnnouncement`. Drawing new items needs a pointer; offer a button that adds an item for keyboard users.
+
+## API
+
+```tsx
+function useTimeGrid<Item extends TimeGridItem>(
+  options: UseTimeGridOptions<Item>,
+): UseTimeGridReturn<Item>;
+```
+
+An item is `{ id, start, end, lane? }` plus any fields of your own. A lane is `{ id, start, end }`. Times are `Date` objects.
+
+### Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `lanes` | `TimeGridLane[]` | | Lanes in display order |
+| `value` | `Item[]` | | Items to place. Controlled |
+| `defaultValue` | `Item[]` | `[]` | Initial items when uncontrolled |
+| `onValueChange` | `(value, details) => void` | | Called on drop when an item changed. `details` has `item`, `action`, `from`, `to` and `reason` |
+| `onCreate` | `(range) => void` | | Called with `{ start, end, lane }` when a range is drawn on empty space |
+| `orientation` | `"vertical" \| "horizontal"` | `"vertical"` | Direction time runs inside a lane |
+| `overlap` | `"split" \| "stack"` | `"split"` | How overlapping items share a lane |
+| `step` | `number` | 15 minutes | Snap step in milliseconds, also the keyboard step |
+| `snap` | `(time, lane) => number` | rounds to `step` | Custom snapping |
+| `minDuration` | `number` | `step` | Shortest length when resizing or drawing |
+| `lockLane` | `boolean` | `false` | Keep items in their own lane |
+| `canChange` | `({ item, action, from, to }) => boolean` | | Return `false` to refuse a change |
+| `disabled` | `boolean` | `false` | Turn off all changes |
+| `autoScroll` | `boolean` | `true` | Scroll near the edges while dragging |
+| `getItemLabel` | `(item) => string` | the id | Name of an item in announcements |
+| `getLaneLabel` | `(lane) => string` | the id | Name of a lane in announcements |
+| `formatRange` | `(start, end) => string` | browser date format | Time range in announcements |
+| `instructions` | `string` | English text | Keyboard instructions for screen readers |
+| `getAnnouncement` | `(event) => string \| undefined` | English messages | Custom announcements |
+
+`action` is `"move"`, `"resize-start"` or `"resize-end"`, and `reason` is `"pointer"` or `"keyboard"`.
+
+### Return value
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `value` | `Item[]` | Items to render, with the changing item at its current time |
+| `active` | `{ id, item, action, from, to, reason, refused } \| null` | The item being changed, if any |
+| `draft` | `{ start, end, lane } \| null` | The range being drawn, if any |
+| `getSegments` | `(lane) => TimeGridSegment[]` | Pieces of items in a lane, in time order |
+| `getDraftSegments` | `(lane) => TimeGridSegment[]` | Pieces of the range being drawn |
+| `getSegmentStyle` | `(segment) => CSSProperties` | Position style for any segment |
+| `getLaneProps` | `(lane) => props` | Spread on each lane element |
+| `getItemProps` | `(segment) => props` | Spread on each segment element |
+| `getResizeHandleProps` | `(segment, "start" \| "end") => props` | Spread on a resize handle inside the segment. Hidden on edges cut by the lane |
+| `getAnnouncerProps` | `() => props` | Spread on one empty element for screen reader messages |
+
+A segment has `item`, `id`, `lane`, `start` and `end` (cut to the lane), `offset` and `size` (0 to 1), `track` and `tracks`, and `startsBefore` and `endsAfter`.
+
+### Data attributes
+
+| Attribute | On | When |
+|-----------|----|------|
+| `data-dragging` | item | The item is being changed |
+| `data-action` | item | `move`, `resize-start` or `resize-end` while it changes |
+| `data-refused` | item | `canChange` refused the current change |
+| `data-starts-before` | item | The item began in an earlier lane |
+| `data-ends-after` | item | The item continues in a later lane |
+| `data-time-grid-lane` | lane | Always |
+| `data-time-grid-item` | item | Always |
+
+Style them with Tailwind, for example `data-dragging:shadow-lg`, `data-refused:bg-destructive/12` or `data-ends-after:rounded-b-none`.
+
+### Helpers
+
+```tsx
+import {
+  getTimeGridKeyboardChange,
+  getTimeGridSegmentStyle,
+  layoutTimeGrid,
+  snapTime,
+} from "@/hooks/use-time-grid";
+
+// Pieces per lane, with tracks for overlapping items, for example on the server
+const segments = layoutTimeGrid(items, lanes);
+
+// Round a time to 15 minutes from the start of its lane
+const time = snapTime(date.getTime(), lane.start.getTime(), 15 * 60_000);
+```
+
+## Examples
+
+### Week
+
+Drag events to move them, drag their top or bottom edge to resize them, and drag on empty space to add one.
+
+<TimeGridWeekDemo />
+
+### Gantt chart
+
+Bars stay in their row and snap to whole days. The diamond is a milestone.
+
+<TimeGridGanttDemo />

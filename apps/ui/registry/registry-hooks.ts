@@ -31,4 +31,14 @@ export const hooks: Registry["items"] = [
     name: "use-copy-to-clipboard",
     type: "registry:hook",
   },
+  {
+    files: [
+      {
+        path: "hooks/use-time-grid.ts",
+        type: "registry:hook",
+      },
+    ],
+    name: "use-time-grid",
+    type: "registry:hook",
+  },
 ];

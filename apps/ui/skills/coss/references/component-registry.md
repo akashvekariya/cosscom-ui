@@ -64,6 +64,12 @@ For optional **`portalProps`** on composed `*Popup` components and **toast** pro
 - **Group** — Connected control cluster. `./references/primitives/group.md`
 - **Empty** — Empty-state placeholder. `./references/primitives/empty.md`
 
+## Scheduling & Planning
+- **EventCalendar** — Day, week, month and agenda calendar of events with drag, resize, create and edit. `./references/primitives/event-calendar.md`
+- **GanttChart** — Project timeline with groups, progress, milestones and dependencies. `./references/primitives/gantt-chart.md`
+- **ResourceScheduler** — Bookings of rooms, people or equipment without double booking. `./references/primitives/resource-scheduler.md`
+- **useTimeGrid** (hook) — The drag, resize and create behavior under all three, for custom time layouts. Docs: `apps/ui/content/docs/hooks/use-time-grid.mdx`
+
 ## Feedback & Status
 - **Alert** — Inline persistent status message. `./references/primitives/alert.md`
 - **Toast** — Transient notification (toastManager). `./references/primitives/toast.md`

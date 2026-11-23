@@ -1,0 +1,113 @@
+---
+title: Gantt Chart
+description: A project timeline with groups, progress, milestones and dependency arrows, where tasks can be moved, resized, added, edited and deleted.
+---
+
+<ComponentPreview
+  name="p-gantt-chart-1"
+  align="start"
+  className="**:data-align:h-auto! **:data-align:overflow-visible!"
+/>
+
+## Installation
+
+```bash
+npx shadcn@latest add @coss/gantt-chart
+```
+
+The chart is built on the [useTimeGrid](/docs/hooks/use-time-grid) hook and uses `date-fns` for dates.
+
+## Usage
+
+```tsx
+import { useState } from "react"
+import { GanttChart, type GanttTask } from "@/components/ui/gantt-chart"
+
+export function ProjectPlan() {
+  const [tasks, setTasks] = useState<GanttTask[]>(initialTasks)
+
+  return (
+    <GanttChart
+      title="Website relaunch"
+      groups={[
+        { id: "design", name: "Design", color: "blue" },
+        { id: "build", name: "Build", color: "teal" },
+      ]}
+      tasks={tasks}
+      onTasksChange={setTasks}
+    />
+  )
+}
+```
+
+`onTasksChange` receives the full list after every change, plus what changed: `{ type: "create" | "update" | "delete", task, previous }`.
+
+### Tasks
+
+```ts
+type GanttTask = {
+  id: string
+  name: string
+  start: Date
+  end: Date // exclusive: the midnight after the last day; equal to start for a milestone
+  progress?: number // 0 to 1
+  color?: string
+  groupId?: string
+  dependencies?: string[] // ids of tasks that must finish first
+  assignee?: { name: string; image?: string }
+  readOnly?: boolean
+}
+```
+
+Tasks snap to whole days. A task whose start equals its end is a milestone, drawn as a diamond on its date.
+
+### Groups
+
+Groups appear in the order given, with their tasks under them. An open group shows a soft band for the dates it spans. A closed group rolls its tasks up into its own row, and dependency arrows point at that row. Tasks without a group come last.
+
+### Dependencies
+
+Each id in `dependencies` draws an arrow from the end of that task to the start of this one. When a task starts before a task it depends on ends, the arrow turns red and dashed, the task gets a red outline, and its details show an "Overlaps" badge. Moving tasks never reschedules others; your app decides what to do.
+
+### Zoom
+
+```tsx
+<GanttChart defaultZoom="week" />
+```
+
+`"day"`, `"week"` and `"month"` set how much time fits on screen. The header shows months above days, months above weeks, or years above months.
+
+## Interaction
+
+| Input | Behavior |
+|-------|----------|
+| Click or `Enter` on a bar | Open its details, with edit and delete |
+| Drag a bar | Move it by days; it stays in its row |
+| Drag an edge | Change its start or end |
+| `Space` on a bar | Pick it up; left and right arrows move it a day, `Shift` + arrows change its end, `Alt` + arrows its start, `Space` drops, `Escape` cancels |
+| Drag the edge of the task list, or focus it and use arrow keys | Resize the task list |
+| Group chevron | Open or close the group |
+
+## Accessibility
+
+Each bar is a button named by its task, dates and progress. Moves and resizes are announced. The task list is a list of buttons that open each task, so the chart can be used without the timeline.
+
+## API Reference
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `tasks` | `GanttTask[]` | | Tasks to show. Controlled |
+| `defaultTasks` | `GanttTask[]` | `[]` | Initial tasks when uncontrolled |
+| `onTasksChange` | `(tasks, change) => void` | | Called after every create, update or delete |
+| `groups` | `{ id, name, color? }[]` | `[]` | Groups in display order |
+| `zoom` | `"day" \| "week" \| "month"` | | Zoom level. Controlled |
+| `defaultZoom` | same | `"day"` | Initial zoom |
+| `onZoomChange` | `(zoom) => void` | | Called when the zoom changes |
+| `title` | `ReactNode` | `"Tasks"` | Toolbar title |
+| `weekStartsOn` | `0`–`6` | `1` | First day of the week |
+| `locale` | date-fns `Locale` | | Date language |
+| `labels` | `Partial<GanttChartLabels>` | English | Interface text and messages |
+| `editable` | `boolean` | `true` | Allow changes |
+| `now` | `Date` | today | Fix today, for tests and demos |
+| `createId` | `() => string` | random | Id for new tasks |
+| `className` | `string` | | Classes on the frame; the maximum height is `40rem` |

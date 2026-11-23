@@ -25,6 +25,10 @@ import { CodeTabs } from "@/components/code-tabs";
 import { ComponentPreview } from "@/components/component-preview";
 import { ComponentSource } from "@/components/component-source";
 import { MediaQueryDemo } from "@/components/media-query-demo";
+import {
+  TimeGridGanttDemo,
+  TimeGridWeekDemo,
+} from "@/components/time-grid-demo";
 import { cn } from "@/lib/utils";
 
 export const mdxComponents = {
@@ -365,6 +369,8 @@ export const mdxComponents = {
       {...props}
     />
   ),
+  TimeGridGanttDemo,
+  TimeGridWeekDemo,
   tr: ({ className, ...props }: React.ComponentProps<"tr">) => (
     <tr
       className={cn("m-0 border-b last:border-b-none", className)}

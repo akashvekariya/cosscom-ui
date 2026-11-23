@@ -1,0 +1,12 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "event-colors",
+  "files": [
+    {
+      "path": "registry/default/lib/event-colors.ts",
+      "content": "/**\n * Named colors for calendar events, gantt bars and bookings. Any CSS color\n * also works wherever a color name is accepted.\n */\nexport const eventColors = {\n  blue: \"var(--color-blue-500)\",\n  sky: \"var(--color-sky-500)\",\n  teal: \"var(--color-teal-500)\",\n  green: \"var(--color-emerald-500)\",\n  amber: \"var(--color-amber-500)\",\n  orange: \"var(--color-orange-500)\",\n  red: \"var(--color-rose-500)\",\n  pink: \"var(--color-pink-500)\",\n  violet: \"var(--color-violet-500)\",\n  gray: \"var(--color-zinc-500)\",\n} as const;\n\nexport type EventColor = keyof typeof eventColors;\n\nexport const eventColorNames: EventColor[] = Object.keys(\n  eventColors,\n) as EventColor[];\n\n/** The CSS color for a color name, or the value itself if it is not a name. */\nexport function resolveEventColor(color?: string, fallback = \"blue\"): string {\n  const value = color ?? fallback;\n  return value in eventColors ? eventColors[value as EventColor] : value;\n}\n\n/**\n * Classes for an event surface tinted by `--event-color`: a soft fill, a\n * solid start edge and readable text in light and dark mode.\n */\nexport const eventSurfaceClassName =\n  \"border border-[color-mix(in_oklab,var(--event-color)_28%,transparent)] border-s-[3px] border-s-(--event-color) bg-[color-mix(in_oklab,var(--event-color)_14%,var(--background))] text-foreground dark:bg-[color-mix(in_oklab,var(--event-color)_22%,var(--background))]\";\n",
+      "type": "registry:lib"
+    }
+  ],
+  "type": "registry:lib"
+}

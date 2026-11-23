@@ -1,0 +1,195 @@
+---
+title: Event Calendar
+description: A full calendar with day, week, month and agenda views, colored calendars, and events you can drag, resize, draw, open, edit and delete.
+---
+
+<ComponentPreview
+  name="p-event-calendar-1"
+  align="start"
+  className="**:data-align:h-auto! **:data-align:overflow-visible!"
+/>
+
+## Installation
+
+```bash
+npx shadcn@latest add @coss/event-calendar
+```
+
+The calendar is built on the [useTimeGrid](/docs/hooks/use-time-grid) hook and uses `date-fns` for dates.
+
+## Usage
+
+```tsx
+import { useState } from "react"
+import {
+  type CalendarEvent,
+  EventCalendar,
+} from "@/components/ui/event-calendar"
+
+export function TeamCalendar() {
+  const [events, setEvents] = useState<CalendarEvent[]>(initialEvents)
+
+  return (
+    <EventCalendar
+      calendars={[
+        { id: "work", name: "Work", color: "blue" },
+        { id: "personal", name: "Personal", color: "green" },
+      ]}
+      events={events}
+      onEventsChange={setEvents}
+    />
+  )
+}
+```
+
+`onEventsChange` receives the full list after every change, plus what changed: `{ type: "create" | "update" | "delete", event, previous }`. Save the change to your backend from there. Leave out `events` and pass `defaultEvents` to let the calendar keep its own state.
+
+### Events
+
+```ts
+type CalendarEvent = {
+  id: string
+  title: string
+  start: Date
+  end: Date // exclusive; for all-day events, the midnight after the last day
+  allDay?: boolean
+  calendarId?: string
+  color?: string // a color name or any CSS color; overrides the calendar color
+  location?: string
+  description?: string
+  status?: "confirmed" | "tentative" | "cancelled"
+  attendees?: { name: string; image?: string }[]
+  readOnly?: boolean
+}
+```
+
+All-day events, and timed events that last a day or more, show in the all-day row of the day and week views. Tentative events are striped; cancelled events are struck through, so color is never the only signal.
+
+### Calendars and colors
+
+Each calendar gives its events a color. Use a name from the palette (`blue`, `sky`, `teal`, `green`, `amber`, `orange`, `red`, `pink`, `violet`, `gray`) or any CSS color. A color on an event overrides its calendar. People can hide calendars from the filter menu in the toolbar; control this from your own UI, such as a sidebar, with `hiddenCalendars` and `onHiddenCalendarsChange`.
+
+### Views and dates
+
+```tsx
+<EventCalendar
+  defaultView="week"
+  views={["day", "week", "month", "agenda"]}
+  date={date}
+  onDateChange={setDate}
+  weekStartsOn={1}
+  hideWeekends
+/>
+```
+
+`view` and `date` can be controlled or left to the calendar. On phones the week view shows three days at a time and the toolbar becomes two rows. Two-finger swipes on a trackpad and finger swipes on a phone move to the previous or next period.
+
+### Hours
+
+```tsx
+<EventCalendar
+  dayStartHour={6}
+  dayEndHour={22}
+  workStartHour={9}
+  workEndHour={17}
+  hourHeight={56}
+  stepMinutes={15}
+  hour12={false}
+/>
+```
+
+Hours outside the working day, and weekends, are shaded. Events snap to `stepMinutes` when moved or resized.
+
+### Syncing with other calendars
+
+The calendar takes events in and reports changes out, so it works with any source, such as Google Calendar, Apple Calendar or CalDAV, through your own backend:
+
+- `onRangeChange({ start, end, view })` fires with the dates on screen, so you can load only those events.
+- Mark a calendar, or a single event such as an invite, `readOnly`. People can open it but not move, edit or delete it.
+- Expand recurring events into one event per occurrence before passing them in.
+
+### Custom event content
+
+```tsx
+<EventCalendar
+  renderEvent={(event, { compact, view }) => (
+    <span className="truncate font-medium">{event.title}</span>
+  )}
+/>
+```
+
+### Read-only calendar
+
+Set `editable={false}` to show events without letting people change them. Events still open on click.
+
+### Labels and locale
+
+Pass a date-fns `locale` to translate dates, and `labels` to translate the interface, including screen reader messages:
+
+```tsx
+import { de } from "date-fns/locale"
+
+<EventCalendar locale={de} labels={{ today: "Heute", newEvent: "Neuer Termin" }} />
+```
+
+## Interaction
+
+| Input | Behavior |
+|-------|----------|
+| Click or `Enter` on an event | Open its details, with edit and delete |
+| Drag an event | Move it to another time or day |
+| Drag an edge | Change its start or end |
+| Drag on empty space, or double-click | Draw a new event; the editor opens with that time |
+| `Space` on an event | Pick it up; arrow keys move it, `Shift` + arrows change its end, `Alt` + arrows its start, `Space` drops, `Escape` cancels |
+| Touch | Press and hold an event, then drag; a quick swipe scrolls |
+| Day header | Opens that day |
+
+## Accessibility
+
+Each event is a button named by its title, time and place. Moves and resizes are announced to screen readers. The current period is announced when it changes. The New event button lets keyboard users create events without drawing.
+
+## Examples
+
+### Content calendar
+
+Channels as calendars, drafts as tentative events and published posts locked as read-only.
+
+<ComponentPreview
+  name="p-event-calendar-2"
+  align="start"
+  className="**:data-align:h-auto! **:data-align:overflow-visible!"
+/>
+
+## API Reference
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `events` | `CalendarEvent[]` | | Events to show. Controlled |
+| `defaultEvents` | `CalendarEvent[]` | `[]` | Initial events when uncontrolled |
+| `onEventsChange` | `(events, change) => void` | | Called after every create, update or delete |
+| `calendars` | `{ id, name, color, readOnly? }[]` | `[]` | Calendars and their colors |
+| `hiddenCalendars` | `string[]` | | Ids of hidden calendars. Controlled |
+| `defaultHiddenCalendars` | `string[]` | `[]` | Initial hidden calendars |
+| `onHiddenCalendarsChange` | `(ids) => void` | | Called when calendars are shown or hidden |
+| `view` | `"day" \| "week" \| "month" \| "agenda"` | | Current view. Controlled |
+| `defaultView` | same | `"week"` | Initial view |
+| `onViewChange` | `(view) => void` | | Called when the view changes |
+| `views` | view array | all four | Views offered in the switcher |
+| `date` | `Date` | | Date on screen. Controlled |
+| `defaultDate` | `Date` | today | Initial date |
+| `onDateChange` | `(date) => void` | | Called when the date changes |
+| `onRangeChange` | `({ start, end, view }) => void` | | Dates on screen, for loading events |
+| `weekStartsOn` | `0`–`6` | `1` | First day of the week |
+| `hideWeekends` | `boolean` | `false` | Monday to Friday only in the week view |
+| `dayStartHour`, `dayEndHour` | `number` | `0`, `24` | Hours shown in day and week views |
+| `workStartHour`, `workEndHour` | `number` | `9`, `17` | Working hours; others are shaded |
+| `hourHeight` | `number` | `48` | Height of one hour in pixels |
+| `stepMinutes` | `number` | `15` | Snap step |
+| `hour12` | `boolean` | locale | 12 or 24 hours |
+| `locale` | date-fns `Locale` | | Date language |
+| `labels` | `Partial<EventCalendarLabels>` | English | Interface text and messages |
+| `editable` | `boolean` | `true` | Allow changes |
+| `renderEvent` | `(event, { compact, view }) => ReactNode` | | Replace event content |
+| `now` | `Date` | current time | Fix the current time, for tests and demos |
+| `createId` | `() => string` | random | Id for new events |
+| `className` | `string` | | Classes on the frame; the default height is `44rem` |

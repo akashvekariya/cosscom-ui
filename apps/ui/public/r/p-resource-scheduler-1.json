@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "p-resource-scheduler-1",
+  "description": "Meeting room booking with seats, blocked times and no double booking",
+  "registryDependencies": [
+    "@coss/resource-scheduler"
+  ],
+  "files": [
+    {
+      "path": "registry/default/particles/p-resource-scheduler-1.tsx",
+      "content": "\"use client\";\n\nimport { addMinutes, startOfDay } from \"date-fns\";\nimport { useEffect, useState } from \"react\";\nimport {\n  ResourceScheduler,\n  type SchedulerBooking,\n  type SchedulerResource,\n} from \"@/registry/default/ui/resource-scheduler\";\n\nconst nadia = {\n  image:\n    \"https://images.unsplash.com/photo-1628157588553-5eeea00af15c?w=96&h=96&dpr=2&q=80\",\n  name: \"Nadia Ekman\",\n};\nconst eli = {\n  image:\n    \"https://images.unsplash.com/photo-1655874819398-c6dfbec68ac7?w=96&h=96&dpr=2&q=80\",\n  name: \"Eli Wren\",\n};\nconst mark = {\n  image:\n    \"https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=96&h=96&dpr=2&q=80\",\n  name: \"Mark Andersson\",\n};\n\nfunction sampleDay(day: Date): {\n  rooms: SchedulerResource[];\n  bookings: SchedulerBooking[];\n} {\n  const at = (hour: number, minute = 0): Date =>\n    addMinutes(day, hour * 60 + minute);\n  return {\n    bookings: [\n      {\n        bookedBy: nadia,\n        end: at(10),\n        id: \"b1\",\n        resourceId: \"atlas\",\n        start: at(9),\n        title: \"Interview\",\n      },\n      {\n        bookedBy: eli,\n        end: at(15),\n        id: \"b2\",\n        resourceId: \"atlas\",\n        start: at(13, 30),\n        title: \"Design critique\",\n      },\n      {\n        bookedBy: mark,\n        end: at(12, 30),\n        id: \"b3\",\n        resourceId: \"birch\",\n        start: at(10),\n        title: \"Sprint planning\",\n      },\n      {\n        bookedBy: { name: \"Priya Shah\" },\n        end: at(17),\n        id: \"b4\",\n        notes: \"Bring the quarterly numbers.\",\n        resourceId: \"cedar\",\n        start: at(15),\n        status: \"tentative\",\n        title: \"All hands prep\",\n      },\n      {\n        bookedBy: eli,\n        end: at(11, 30),\n        id: \"b5\",\n        resourceId: \"dune\",\n        start: at(11),\n        title: \"Call\",\n      },\n    ],\n    rooms: [\n      {\n        capacity: 4,\n        color: \"blue\",\n        description: \"Floor 2\",\n        id: \"atlas\",\n        name: \"Atlas\",\n      },\n      {\n        capacity: 8,\n        color: \"violet\",\n        description: \"Floor 2\",\n        id: \"birch\",\n        name: \"Birch\",\n      },\n      {\n        capacity: 12,\n        color: \"teal\",\n        description: \"Floor 3\",\n        id: \"cedar\",\n        name: \"Cedar\",\n        unavailable: [{ end: at(14), reason: \"Deep clean\", start: at(12) }],\n      },\n      {\n        capacity: 2,\n        color: \"amber\",\n        description: \"Phone booth\",\n        id: \"dune\",\n        name: \"Dune\",\n      },\n    ],\n  };\n}\n\nexport default function Particle() {\n  const [today, setToday] = useState<Date | null>(null);\n  const [rooms, setRooms] = useState<SchedulerResource[]>([]);\n  const [bookings, setBookings] = useState<SchedulerBooking[]>([]);\n\n  // Build the sample day on the client, so it always shows today.\n  useEffect(() => {\n    const now = new Date();\n    const sample = sampleDay(startOfDay(now));\n    setToday(now);\n    setRooms(sample.rooms);\n    setBookings(sample.bookings);\n  }, []);\n\n  if (!today) return <div className=\"h-[40rem] w-full rounded-xl border\" />;\n\n  return (\n    <ResourceScheduler\n      bookings={bookings}\n      className=\"w-full\"\n      defaultDate={today}\n      labels={{ newBooking: \"Book a room\", resources: \"Rooms\" }}\n      layout=\"columns\"\n      onBookingsChange={setBookings}\n      resources={rooms}\n      title=\"Meeting rooms\"\n      views={[\"day\"]}\n    />\n  );\n}\n",
+      "type": "registry:block"
+    }
+  ],
+  "meta": {
+    "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-6xl",
+    "colSpan": 2
+  },
+  "categories": [
+    "resource scheduler"
+  ],
+  "type": "registry:block"
+}

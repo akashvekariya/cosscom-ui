@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "p-event-calendar-2",
+  "description": "Content calendar by channel with drafts and locked published posts",
+  "registryDependencies": [
+    "@coss/badge",
+    "@coss/event-calendar",
+    "@coss/event-colors"
+  ],
+  "files": [
+    {
+      "path": "registry/default/particles/p-event-calendar-2.tsx",
+      "content": "\"use client\";\n\nimport { addDays, startOfMonth } from \"date-fns\";\nimport { useEffect, useState } from \"react\";\nimport { resolveEventColor } from \"@/registry/default/lib/event-colors\";\nimport { Badge } from \"@/registry/default/ui/badge\";\nimport {\n  type CalendarEvent,\n  type CalendarSource,\n  EventCalendar,\n} from \"@/registry/default/ui/event-calendar\";\n\nconst channels: CalendarSource[] = [\n  { color: \"green\", id: \"blog\", name: \"Blog\" },\n  { color: \"violet\", id: \"newsletter\", name: \"Newsletter\" },\n  { color: \"pink\", id: \"social\", name: \"Social\" },\n  { color: \"orange\", id: \"video\", name: \"Video\" },\n];\n\nfunction samplePosts(first: Date): CalendarEvent[] {\n  const day = (offset: number): Date => addDays(first, offset);\n  const post = (\n    id: string,\n    channel: string,\n    title: string,\n    start: number,\n    days = 1,\n    extra: Partial<CalendarEvent> = {},\n  ): CalendarEvent => ({\n    allDay: true,\n    calendarId: channel,\n    end: day(start + days),\n    id,\n    start: day(start),\n    title,\n    ...extra,\n  });\n  return [\n    post(\"p1\", \"blog\", \"Year in review\", 1, 1, { readOnly: true }),\n    post(\"p2\", \"newsletter\", \"Monthly newsletter\", 2, 1, { readOnly: true }),\n    post(\"p3\", \"social\", \"Feature teaser\", 4),\n    post(\"p4\", \"video\", \"Customer story shoot\", 6, 3),\n    post(\"p5\", \"blog\", \"How we ship weekly\", 9),\n    post(\"p6\", \"social\", \"Behind the scenes\", 9, 1, { status: \"tentative\" }),\n    post(\"p7\", \"newsletter\", \"Product update\", 13),\n    post(\"p8\", \"blog\", \"Guide: getting started\", 15, 1, {\n      status: \"tentative\",\n    }),\n    post(\"p9\", \"video\", \"Webinar recording\", 17, 2),\n    post(\"p10\", \"social\", \"Poll: what next?\", 18),\n    post(\"p11\", \"social\", \"Launch countdown\", 21, 3),\n    post(\"p12\", \"blog\", \"Launch announcement\", 24),\n    post(\"p13\", \"newsletter\", \"Launch edition\", 24),\n    post(\"p14\", \"social\", \"Launch thread\", 24),\n    post(\"p15\", \"blog\", \"Postmortem\", 26, 1, { status: \"cancelled\" }),\n  ];\n}\n\nexport default function Particle() {\n  const [today, setToday] = useState<Date | null>(null);\n  const [posts, setPosts] = useState<CalendarEvent[]>([]);\n\n  // Build the sample month on the client, so it always shows this month.\n  useEffect(() => {\n    const now = new Date();\n    setToday(now);\n    setPosts(samplePosts(startOfMonth(now)));\n  }, []);\n\n  if (!today) return <div className=\"h-[46rem] w-full rounded-xl border\" />;\n\n  return (\n    <div className=\"flex w-full flex-col gap-3\">\n      <div className=\"flex flex-wrap items-center justify-between gap-2\">\n        <div>\n          <h3 className=\"font-heading font-semibold text-lg\">\n            Content calendar\n          </h3>\n          <p className=\"text-muted-foreground text-sm\">\n            Drafts are striped. Published posts are locked.\n          </p>\n        </div>\n        <div className=\"flex flex-wrap gap-1.5\">\n          {channels.map((channel) => (\n            <Badge key={channel.id} size=\"lg\" variant=\"outline\">\n              <span\n                aria-hidden=\"true\"\n                className=\"size-2 rounded-full\"\n                style={{ background: resolveEventColor(channel.color) }}\n              />\n              {channel.name}\n              <span className=\"text-muted-foreground tabular-nums\">\n                {posts.filter((post) => post.calendarId === channel.id).length}\n              </span>\n            </Badge>\n          ))}\n        </div>\n      </div>\n      <EventCalendar\n        calendars={channels}\n        className=\"h-[44rem]\"\n        defaultDate={today}\n        defaultView=\"month\"\n        events={posts}\n        labels={{ newEvent: \"New post\" }}\n        now={today}\n        onEventsChange={setPosts}\n        views={[\"month\", \"agenda\"]}\n      />\n    </div>\n  );\n}\n",
+      "type": "registry:block"
+    }
+  ],
+  "meta": {
+    "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-6xl",
+    "colSpan": 2
+  },
+  "categories": [
+    "event calendar",
+    "badge"
+  ],
+  "type": "registry:block"
+}

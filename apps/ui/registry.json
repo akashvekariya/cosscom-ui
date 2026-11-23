@@ -321,6 +321,104 @@
     },
     {
       "dependencies": [
+        "date-fns",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/event-calendar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "event-calendar",
+      "registryDependencies": [
+        "@coss/avatar",
+        "@coss/badge",
+        "@coss/button",
+        "@coss/dialog",
+        "@coss/event-colors",
+        "@coss/field",
+        "@coss/form",
+        "@coss/input",
+        "@coss/label",
+        "@coss/menu",
+        "@coss/popover",
+        "@coss/radio-group",
+        "@coss/segmented-control",
+        "@coss/select",
+        "@coss/switch",
+        "@coss/textarea",
+        "@coss/use-media-query",
+        "@coss/use-time-grid"
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "dependencies": [
+        "date-fns",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/gantt-chart.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "gantt-chart",
+      "registryDependencies": [
+        "@coss/avatar",
+        "@coss/badge",
+        "@coss/button",
+        "@coss/dialog",
+        "@coss/event-colors",
+        "@coss/field",
+        "@coss/form",
+        "@coss/input",
+        "@coss/label",
+        "@coss/popover",
+        "@coss/radio-group",
+        "@coss/segmented-control",
+        "@coss/select",
+        "@coss/slider",
+        "@coss/switch",
+        "@coss/use-media-query",
+        "@coss/use-time-grid"
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "dependencies": [
+        "date-fns",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/resource-scheduler.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "name": "resource-scheduler",
+      "registryDependencies": [
+        "@coss/avatar",
+        "@coss/badge",
+        "@coss/button",
+        "@coss/dialog",
+        "@coss/event-colors",
+        "@coss/field",
+        "@coss/form",
+        "@coss/input",
+        "@coss/popover",
+        "@coss/radio-group",
+        "@coss/segmented-control",
+        "@coss/select",
+        "@coss/textarea",
+        "@coss/use-media-query",
+        "@coss/use-time-grid"
+      ],
+      "type": "registry:ui"
+    },
+    {
+      "dependencies": [
         "@base-ui/react"
       ],
       "files": [
@@ -12460,6 +12558,146 @@
       "type": "registry:block"
     },
     {
+      "categories": [
+        "event calendar",
+        "calendar",
+        "checkbox"
+      ],
+      "description": "Team calendar with a mini month, calendar toggles and a week view",
+      "files": [
+        {
+          "path": "registry/default/particles/p-event-calendar-1.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "meta": {
+        "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-6xl",
+        "colSpan": 2
+      },
+      "name": "p-event-calendar-1",
+      "registryDependencies": [
+        "@coss/calendar",
+        "@coss/checkbox",
+        "@coss/event-calendar",
+        "@coss/event-colors",
+        "@coss/label"
+      ],
+      "type": "registry:block"
+    },
+    {
+      "categories": [
+        "event calendar",
+        "badge"
+      ],
+      "description": "Content calendar by channel with drafts and locked published posts",
+      "files": [
+        {
+          "path": "registry/default/particles/p-event-calendar-2.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "meta": {
+        "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-6xl",
+        "colSpan": 2
+      },
+      "name": "p-event-calendar-2",
+      "registryDependencies": [
+        "@coss/badge",
+        "@coss/event-calendar",
+        "@coss/event-colors"
+      ],
+      "type": "registry:block"
+    },
+    {
+      "categories": [
+        "gantt chart"
+      ],
+      "description": "Project plan with groups, progress, milestones and dependencies",
+      "files": [
+        {
+          "path": "registry/default/particles/p-gantt-chart-1.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "meta": {
+        "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-6xl",
+        "colSpan": 2
+      },
+      "name": "p-gantt-chart-1",
+      "registryDependencies": [
+        "@coss/gantt-chart"
+      ],
+      "type": "registry:block"
+    },
+    {
+      "categories": [
+        "resource scheduler"
+      ],
+      "description": "Meeting room booking with seats, blocked times and no double booking",
+      "files": [
+        {
+          "path": "registry/default/particles/p-resource-scheduler-1.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "meta": {
+        "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-6xl",
+        "colSpan": 2
+      },
+      "name": "p-resource-scheduler-1",
+      "registryDependencies": [
+        "@coss/resource-scheduler"
+      ],
+      "type": "registry:block"
+    },
+    {
+      "categories": [
+        "resource scheduler"
+      ],
+      "description": "Weekly on-call rota with night shifts and time off",
+      "files": [
+        {
+          "path": "registry/default/particles/p-resource-scheduler-2.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "meta": {
+        "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-6xl",
+        "colSpan": 2
+      },
+      "name": "p-resource-scheduler-2",
+      "registryDependencies": [
+        "@coss/resource-scheduler"
+      ],
+      "type": "registry:block"
+    },
+    {
+      "categories": [
+        "resource scheduler",
+        "avatar",
+        "badge"
+      ],
+      "description": "Interview loop for a candidate across interviewers and stages",
+      "files": [
+        {
+          "path": "registry/default/particles/p-resource-scheduler-3.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "meta": {
+        "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-6xl",
+        "colSpan": 2
+      },
+      "name": "p-resource-scheduler-3",
+      "registryDependencies": [
+        "@coss/avatar",
+        "@coss/badge",
+        "@coss/event-colors",
+        "@coss/resource-scheduler"
+      ],
+      "type": "registry:block"
+    },
+    {
       "css": {
         "@layer base": {
           "*": {
@@ -12750,6 +12988,16 @@
       "type": "registry:lib"
     },
     {
+      "files": [
+        {
+          "path": "registry/default/lib/event-colors.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "name": "event-colors",
+      "type": "registry:lib"
+    },
+    {
       "dependencies": [
         "clsx",
         "tailwind-merge"
@@ -12850,6 +13098,16 @@
         }
       ],
       "name": "use-copy-to-clipboard",
+      "type": "registry:hook"
+    },
+    {
+      "files": [
+        {
+          "path": "registry/default/hooks/use-time-grid.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "name": "use-time-grid",
       "type": "registry:hook"
     }
   ],

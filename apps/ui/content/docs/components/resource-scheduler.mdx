@@ -1,0 +1,169 @@
+---
+title: Resource Scheduler
+description: A booking board for rooms, people or equipment that never double-books, with blocked times, a day or week view, and rows or columns.
+---
+
+<ComponentPreview
+  name="p-resource-scheduler-1"
+  align="start"
+  className="**:data-align:h-auto! **:data-align:overflow-visible!"
+/>
+
+## Installation
+
+```bash
+npx shadcn@latest add @coss/resource-scheduler
+```
+
+The scheduler is built on the [useTimeGrid](/docs/hooks/use-time-grid) hook and uses `date-fns` for dates.
+
+## Usage
+
+```tsx
+import { useState } from "react"
+import {
+  ResourceScheduler,
+  type SchedulerBooking,
+} from "@/components/ui/resource-scheduler"
+
+export function RoomBooking() {
+  const [bookings, setBookings] = useState<SchedulerBooking[]>(initial)
+
+  return (
+    <ResourceScheduler
+      title="Meeting rooms"
+      layout="columns"
+      resources={[
+        { id: "atlas", name: "Atlas", capacity: 4, color: "blue" },
+        { id: "birch", name: "Birch", capacity: 8, color: "violet" },
+      ]}
+      bookings={bookings}
+      onBookingsChange={setBookings}
+    />
+  )
+}
+```
+
+`onBookingsChange` receives the full list after every change, plus what changed: `{ type: "create" | "update" | "delete", booking, previous }`.
+
+### Resources and bookings
+
+```ts
+type SchedulerResource = {
+  id: string
+  name: string
+  description?: string // a floor, a role
+  image?: string
+  color?: string
+  capacity?: number // shown as seats
+  unavailable?: { start: Date; end: Date; reason?: string }[]
+  readOnly?: boolean
+}
+
+type SchedulerBooking = {
+  id: string
+  resourceId: string
+  title: string
+  start: Date
+  end: Date
+  color?: string
+  status?: "confirmed" | "tentative" | "cancelled"
+  bookedBy?: { name: string; image?: string }
+  notes?: string
+  readOnly?: boolean
+}
+```
+
+Each resource shows its picture or colored initials, name, seats, description and the hours booked on screen. With more than five resources, a search box filters them.
+
+### No double booking
+
+A booking can never overlap another booking of the same resource, or a time the resource is unavailable. A drag that would clash turns red and snaps back, drawing over a blocked time shows a red outline and a short notice, and the booking form explains the clash. Cancelled bookings do not block time. Set `allowOverlap` to allow overlaps; unavailable times still block.
+
+### Layouts and views
+
+- `layout="rows"` (default): one row per resource, time runs left to right. Suits many resources, people and week views. The time axis stretches to fill the width.
+- `layout="columns"`: one column per resource, time runs down, like a calendar day. Day view only.
+
+`views` offers `"day"` and `"week"`. Week view and phones always use rows. Bookings can run past midnight, as in a night shift; in the booking form, an end time before the start means the next day.
+
+### Hours
+
+```tsx
+<ResourceScheduler
+  dayStartHour={8}
+  dayEndHour={18}
+  workStartHour={9}
+  workEndHour={17}
+  stepMinutes={15}
+/>
+```
+
+Hours outside the working day and weekends are shaded.
+
+## Interaction
+
+| Input | Behavior |
+|-------|----------|
+| Click or `Enter` on a booking | Open its details, with edit and delete |
+| Drag a booking | Move it to another time or resource |
+| Drag an edge | Change its start or end |
+| Drag on empty space | Draw a new booking; the form opens with that time and resource |
+| `Space` on a booking | Pick it up; arrow keys move it in time or to the next resource, `Shift` + arrows change its end, `Alt` + arrows its start, `Space` drops, `Escape` cancels |
+
+## Accessibility
+
+Each booking is a button named by its title, time and resource. Moves, resizes and refused moves are announced, so screen reader users hear when a time is taken. The New booking button lets keyboard users book without drawing.
+
+## Examples
+
+### On-call rota
+
+People as rows over a week, with hour steps, night shifts and vacation.
+
+<ComponentPreview
+  name="p-resource-scheduler-2"
+  align="start"
+  className="**:data-align:h-auto! **:data-align:overflow-visible!"
+/>
+
+### Interview loop
+
+Interviewers as rows for one day, with lunch and focus time blocked, and a candidate card above.
+
+<ComponentPreview
+  name="p-resource-scheduler-3"
+  align="start"
+  className="**:data-align:h-auto! **:data-align:overflow-visible!"
+/>
+
+## API Reference
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `resources` | `SchedulerResource[]` | | Resources in display order |
+| `bookings` | `SchedulerBooking[]` | | Bookings to show. Controlled |
+| `defaultBookings` | `SchedulerBooking[]` | `[]` | Initial bookings when uncontrolled |
+| `onBookingsChange` | `(bookings, change) => void` | | Called after every create, update or delete |
+| `layout` | `"rows" \| "columns"` | `"rows"` | Resources as rows or columns |
+| `view` | `"day" \| "week"` | | Current view. Controlled |
+| `defaultView` | same | `"day"` | Initial view |
+| `onViewChange` | `(view) => void` | | Called when the view changes |
+| `views` | view array | both | Views offered in the switcher |
+| `date` | `Date` | | Date on screen. Controlled |
+| `defaultDate` | `Date` | today | Initial date |
+| `onDateChange` | `(date) => void` | | Called when the date changes |
+| `onRangeChange` | `({ start, end }) => void` | | Dates on screen, for loading bookings |
+| `dayStartHour`, `dayEndHour` | `number` | `7`, `20` | Hours shown in the day view |
+| `workStartHour`, `workEndHour` | `number` | `9`, `18` | Working hours; others are shaded |
+| `stepMinutes` | `number` | `30` | Snap step |
+| `allowOverlap` | `boolean` | `false` | Allow bookings to overlap |
+| `weekStartsOn` | `0`–`6` | `1` | First day of the week |
+| `hour12` | `boolean` | locale | 12 or 24 hours |
+| `locale` | date-fns `Locale` | | Date language |
+| `labels` | `Partial<ResourceSchedulerLabels>` | English | Interface text and messages, such as `resources: "Rooms"` |
+| `editable` | `boolean` | `true` | Allow changes |
+| `title` | `ReactNode` | | Toolbar title |
+| `now` | `Date` | current time | Fix the current time, for tests and demos |
+| `createId` | `() => string` | random | Id for new bookings |
+| `className` | `string` | | Classes on the frame; the maximum height is `40rem` |

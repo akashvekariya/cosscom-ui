@@ -36,10 +36,12 @@
 - [Dialog](https://coss.com/ui/docs/components/dialog.md): A modal overlay for displaying content that requires user interaction.
 - [Drawer](https://coss.com/ui/docs/components/drawer.md): A panel that slides in from the edge of the screen with swipe gestures, snap points, and nested drawer support.
 - [Empty](https://coss.com/ui/docs/components/empty.md): A container for displaying empty state information.
+- [Event Calendar](https://coss.com/ui/docs/components/event-calendar.md): A calendar with day, week, month and agenda views, colored calendars, and events you can drag, resize, draw, edit and delete.
 - [Field](https://coss.com/ui/docs/components/field.md): A wrapper component for form inputs with labels and validation.
 - [Fieldset](https://coss.com/ui/docs/components/fieldset.md): A group of related form fields with a common label.
 - [Form](https://coss.com/ui/docs/components/form.md): A complete form implementation with validation and submission handling.
 - [Frame](https://coss.com/ui/docs/components/frame.md): A container component for displaying content in a frame.
+- [Gantt Chart](https://coss.com/ui/docs/components/gantt-chart.md): A project timeline with groups, progress, milestones and dependency arrows.
 - [Group](https://coss.com/ui/docs/components/group.md): A container component for grouping related content with consistent styling.
 - [Input](https://coss.com/ui/docs/components/input.md): A native input element.
 - [Input Group](https://coss.com/ui/docs/components/input-group.md): A flexible component for grouping inputs with addons, buttons, and other elements.
@@ -54,6 +56,7 @@
 - [Preview Card](https://coss.com/ui/docs/components/preview-card.md): A rich preview component for displaying linked content.
 - [Progress](https://coss.com/ui/docs/components/progress.md): A visual indicator showing the completion status of a task.
 - [Radio Group](https://coss.com/ui/docs/components/radio-group.md): A set of mutually exclusive options presented as radio buttons.
+- [Resource Scheduler](https://coss.com/ui/docs/components/resource-scheduler.md): A booking board for rooms, people or equipment that never double-books.
 - [Scroll Area](https://coss.com/ui/docs/components/scroll-area.md): A container with custom scrollbars for overflow content.
 - [Select](https://coss.com/ui/docs/components/select.md): A common form component for choosing a predefined value in a dropdown menu.
 - [Separator](https://coss.com/ui/docs/components/separator.md): A visual divider for separating content sections.
@@ -76,3 +79,4 @@
 
 - [useMediaQuery](https://coss.com/ui/docs/hooks/use-media-query.md): Reactive media query hook with Tailwind-like syntax for conditional rendering based on breakpoints, pointer type, or any CSS media query.
 - [useCopyToClipboard](https://coss.com/ui/docs/hooks/use-copy-to-clipboard.md): Copy text to clipboard with a temporary "copied" state and optional callback.
+- [useTimeGrid](https://coss.com/ui/docs/hooks/use-time-grid.md): Place items with a start and an end on lanes of time, such as calendar days or gantt rows, and move, resize or create them by mouse, touch and keyboard.

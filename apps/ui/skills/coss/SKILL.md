@@ -65,7 +65,7 @@ Rule references (read on demand when the task touches these areas):
 
 ## Component discovery
 
-All 55 primitives have dedicated reference guides at `./references/primitives/<name>.md`. To find the right one for a task, consult the component registry index:
+All 58 primitives have dedicated reference guides at `./references/primitives/<name>.md`. To find the right one for a task, consult the component registry index:
 
 - `./references/component-registry.md`
 
