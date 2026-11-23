@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "p-kanban-5",
+  "description": "Kanban board with image cards",
+  "registryDependencies": [
+    "@coss/badge",
+    "@coss/use-sortable"
+  ],
+  "files": [
+    {
+      "path": "registry/default/particles/p-kanban-5.tsx",
+      "content": "\"use client\";\n\nimport { useState } from \"react\";\nimport {\n  type SortableValue,\n  useSortable,\n} from \"@/registry/default/hooks/use-sortable\";\nimport { cn } from \"@/registry/default/lib/utils\";\nimport { Badge } from \"@/registry/default/ui/badge\";\n\ntype Shot = { id: string; title: string; image: string; format: string };\n\nconst columns = [\n  { id: \"ideas\", label: \"Ideas\" },\n  { id: \"review\", label: \"In review\" },\n  { id: \"approved\", label: \"Approved\" },\n];\n\nconst initialBoard: SortableValue<Shot> = {\n  approved: [\n    {\n      format: \"Banner\",\n      id: \"s4\",\n      image:\n        \"https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=480&h=270&fit=crop&q=80\",\n      title: \"Product launch banner\",\n    },\n  ],\n  ideas: [\n    {\n      format: \"Post\",\n      id: \"s1\",\n      image:\n        \"https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=480&h=270&fit=crop&q=80\",\n      title: \"Spring campaign\",\n    },\n    {\n      format: \"Story\",\n      id: \"s2\",\n      image:\n        \"https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=480&h=270&fit=crop&q=80\",\n      title: \"Team offsite recap\",\n    },\n  ],\n  review: [\n    {\n      format: \"Post\",\n      id: \"s3\",\n      image:\n        \"https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=480&h=270&fit=crop&q=80\",\n      title: \"Customer story\",\n    },\n  ],\n};\n\nconst cardClassName =\n  \"flex cursor-grab flex-col overflow-hidden rounded-lg border bg-card text-card-foreground shadow-xs/5 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background\";\n\nfunction ShotCard({ shot }: { shot: Shot }) {\n  return (\n    <>\n      <img\n        alt=\"\"\n        className=\"aspect-video w-full bg-muted object-cover\"\n        draggable={false}\n        height={270}\n        src={shot.image}\n        width={480}\n      />\n      <div className=\"flex items-center justify-between gap-2 p-2.5\">\n        <span className=\"font-medium text-base sm:text-sm\">{shot.title}</span>\n        <Badge variant=\"secondary\">{shot.format}</Badge>\n      </div>\n    </>\n  );\n}\n\nexport default function Particle() {\n  const [board, setBoard] = useState(initialBoard);\n  const sortable = useSortable({\n    getContainerLabel: (id) =>\n      columns.find((column) => column.id === id)?.label ?? id,\n    getItemLabel: (shot) => shot.title,\n    onValueChange: setBoard,\n    value: board,\n  });\n\n  return (\n    <div className=\"w-full overflow-x-auto\">\n      <div className=\"flex gap-3\">\n        {columns.map((column) => {\n          const shots = sortable.value[column.id] ?? [];\n          return (\n            <div\n              className=\"flex w-[min(16rem,75vw)] shrink-0 flex-col gap-2 rounded-xl bg-muted/72 p-2 sm:w-auto sm:min-w-44 sm:flex-1\"\n              key={column.id}\n              {...sortable.getContainerProps(column.id)}\n            >\n              <div className=\"flex items-center justify-between px-1 font-medium text-base sm:text-sm\">\n                {column.label}\n                <Badge variant=\"outline\">{shots.length}</Badge>\n              </div>\n              <div className=\"flex min-h-32 flex-col gap-2\">\n                {shots.map((shot) => (\n                  <div\n                    className={cn(cardClassName, \"data-dragging:opacity-50\")}\n                    key={shot.id}\n                    {...sortable.getItemProps(shot)}\n                  >\n                    <ShotCard shot={shot} />\n                  </div>\n                ))}\n              </div>\n            </div>\n          );\n        })}\n      </div>\n      {sortable.active?.reason === \"pointer\" && (\n        <div\n          className={cn(cardClassName, \"z-50 shadow-lg\")}\n          {...sortable.getOverlayProps()}\n        >\n          <ShotCard shot={sortable.active.item} />\n        </div>\n      )}\n      <div {...sortable.getAnnouncerProps()} />\n    </div>\n  );\n}\n",
+      "type": "registry:block"
+    }
+  ],
+  "meta": {
+    "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-4xl",
+    "colSpan": 2
+  },
+  "categories": [
+    "kanban",
+    "card",
+    "badge"
+  ],
+  "type": "registry:block"
+}

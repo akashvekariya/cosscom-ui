@@ -6641,6 +6641,134 @@
     },
     {
       "categories": [
+        "kanban",
+        "card",
+        "badge"
+      ],
+      "description": "Kanban board with cards you drag between columns",
+      "files": [
+        {
+          "path": "registry/default/particles/p-kanban-1.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "meta": {
+        "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-4xl",
+        "colSpan": 2
+      },
+      "name": "p-kanban-1",
+      "registryDependencies": [
+        "@coss/badge",
+        "@coss/use-sortable"
+      ],
+      "type": "registry:block"
+    },
+    {
+      "categories": [
+        "kanban",
+        "card",
+        "dialog",
+        "avatar",
+        "badge"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "description": "Kanban board with rich task cards, drag handles and a details dialog",
+      "files": [
+        {
+          "path": "registry/default/particles/p-kanban-2.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "meta": {
+        "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-4xl",
+        "colSpan": 2
+      },
+      "name": "p-kanban-2",
+      "registryDependencies": [
+        "@coss/avatar",
+        "@coss/badge",
+        "@coss/button",
+        "@coss/dialog",
+        "@coss/use-sortable"
+      ],
+      "type": "registry:block"
+    },
+    {
+      "categories": [
+        "kanban",
+        "card",
+        "badge"
+      ],
+      "description": "Kanban board with column limits that refuse extra cards",
+      "files": [
+        {
+          "path": "registry/default/particles/p-kanban-3.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "meta": {
+        "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-4xl",
+        "colSpan": 2
+      },
+      "name": "p-kanban-3",
+      "registryDependencies": [
+        "@coss/badge",
+        "@coss/use-sortable"
+      ],
+      "type": "registry:block"
+    },
+    {
+      "categories": [
+        "kanban",
+        "card",
+        "avatar"
+      ],
+      "description": "Kanban board with swimlanes for each assignee",
+      "files": [
+        {
+          "path": "registry/default/particles/p-kanban-4.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "meta": {
+        "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-4xl",
+        "colSpan": 2
+      },
+      "name": "p-kanban-4",
+      "registryDependencies": [
+        "@coss/avatar",
+        "@coss/use-sortable"
+      ],
+      "type": "registry:block"
+    },
+    {
+      "categories": [
+        "kanban",
+        "card",
+        "badge"
+      ],
+      "description": "Kanban board with image cards",
+      "files": [
+        {
+          "path": "registry/default/particles/p-kanban-5.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "meta": {
+        "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-4xl",
+        "colSpan": 2
+      },
+      "name": "p-kanban-5",
+      "registryDependencies": [
+        "@coss/badge",
+        "@coss/use-sortable"
+      ],
+      "type": "registry:block"
+    },
+    {
+      "categories": [
         "kbd"
       ],
       "description": "Keyboard shortcuts display",

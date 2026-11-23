@@ -1,0 +1,83 @@
+"use client";
+
+import { useState } from "react";
+import {
+  type SortableValue,
+  useSortable,
+} from "@/registry/default/hooks/use-sortable";
+import { cn } from "@/registry/default/lib/utils";
+import { Badge } from "@/registry/default/ui/badge";
+
+type Card = { id: string; title: string };
+
+const columns = [
+  { id: "todo", label: "To do" },
+  { id: "doing", label: "Doing" },
+  { id: "done", label: "Done" },
+];
+
+const initialBoard: SortableValue<Card> = {
+  doing: [{ id: "c4", title: "Write the launch post" }],
+  done: [{ id: "c5", title: "Pick a launch date" }],
+  todo: [
+    { id: "c1", title: "Design the pricing page" },
+    { id: "c2", title: "Set up the waitlist" },
+    { id: "c3", title: "Record the demo video" },
+  ],
+};
+
+const cardClassName =
+  "cursor-grab rounded-lg border bg-card px-3 py-2.5 text-base text-card-foreground shadow-xs/5 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background sm:text-sm";
+
+export default function Particle() {
+  const [board, setBoard] = useState(initialBoard);
+  const sortable = useSortable({
+    getContainerLabel: (id) =>
+      columns.find((column) => column.id === id)?.label ?? id,
+    getItemLabel: (card) => card.title,
+    onValueChange: setBoard,
+    value: board,
+  });
+
+  return (
+    <div className="w-full overflow-x-auto">
+      <div className="flex gap-3">
+        {columns.map((column) => {
+          const cards = sortable.value[column.id] ?? [];
+          return (
+            <div
+              className="flex w-[min(16rem,75vw)] shrink-0 flex-col gap-2 rounded-xl bg-muted/72 p-2 sm:w-auto sm:min-w-44 sm:flex-1"
+              key={column.id}
+              {...sortable.getContainerProps(column.id)}
+            >
+              <div className="flex items-center justify-between px-1 font-medium text-base sm:text-sm">
+                {column.label}
+                <Badge variant="outline">{cards.length}</Badge>
+              </div>
+              <div className="flex min-h-24 flex-col gap-2">
+                {cards.map((card) => (
+                  <div
+                    className={cn(cardClassName, "data-dragging:opacity-50")}
+                    key={card.id}
+                    {...sortable.getItemProps(card)}
+                  >
+                    {card.title}
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      {sortable.active?.reason === "pointer" && (
+        <div
+          className={cn(cardClassName, "z-50 shadow-lg")}
+          {...sortable.getOverlayProps()}
+        >
+          {sortable.active.item.title}
+        </div>
+      )}
+      <div {...sortable.getAnnouncerProps()} />
+    </div>
+  );
+}

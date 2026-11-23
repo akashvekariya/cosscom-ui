@@ -5747,6 +5747,96 @@ export const Index: Record<string, any> = {
     categories: ["collapsible","frame"],
     meta: {"className":"**:data-[slot=preview]:w-full"},
   },
+  "p-kanban-1": {
+    name: "p-kanban-1",
+    description: "Kanban board with cards you drag between columns",
+    type: "registry:block",
+    registryDependencies: ["@coss/badge","@coss/use-sortable"],
+    files: [{
+      path: "registry/default/particles/p-kanban-1.tsx",
+      type: "registry:block",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/particles/p-kanban-1.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: ["kanban","card","badge"],
+    meta: {"className":"**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-4xl","colSpan":2},
+  },
+  "p-kanban-2": {
+    name: "p-kanban-2",
+    description: "Kanban board with rich task cards, drag handles and a details dialog",
+    type: "registry:block",
+    registryDependencies: ["@coss/avatar","@coss/badge","@coss/button","@coss/dialog","@coss/use-sortable"],
+    files: [{
+      path: "registry/default/particles/p-kanban-2.tsx",
+      type: "registry:block",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/particles/p-kanban-2.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: ["kanban","card","dialog","avatar","badge"],
+    meta: {"className":"**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-4xl","colSpan":2},
+  },
+  "p-kanban-3": {
+    name: "p-kanban-3",
+    description: "Kanban board with column limits that refuse extra cards",
+    type: "registry:block",
+    registryDependencies: ["@coss/badge","@coss/use-sortable"],
+    files: [{
+      path: "registry/default/particles/p-kanban-3.tsx",
+      type: "registry:block",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/particles/p-kanban-3.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: ["kanban","card","badge"],
+    meta: {"className":"**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-4xl","colSpan":2},
+  },
+  "p-kanban-4": {
+    name: "p-kanban-4",
+    description: "Kanban board with swimlanes for each assignee",
+    type: "registry:block",
+    registryDependencies: ["@coss/avatar","@coss/use-sortable"],
+    files: [{
+      path: "registry/default/particles/p-kanban-4.tsx",
+      type: "registry:block",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/particles/p-kanban-4.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: ["kanban","card","avatar"],
+    meta: {"className":"**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-4xl","colSpan":2},
+  },
+  "p-kanban-5": {
+    name: "p-kanban-5",
+    description: "Kanban board with image cards",
+    type: "registry:block",
+    registryDependencies: ["@coss/badge","@coss/use-sortable"],
+    files: [{
+      path: "registry/default/particles/p-kanban-5.tsx",
+      type: "registry:block",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/particles/p-kanban-5.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: ["kanban","card","badge"],
+    meta: {"className":"**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-4xl","colSpan":2},
+  },
   "p-kbd-1": {
     name: "p-kbd-1",
     description: "Keyboard shortcuts display",

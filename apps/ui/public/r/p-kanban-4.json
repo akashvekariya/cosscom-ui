@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "p-kanban-4",
+  "description": "Kanban board with swimlanes for each assignee",
+  "registryDependencies": [
+    "@coss/avatar",
+    "@coss/use-sortable"
+  ],
+  "files": [
+    {
+      "path": "registry/default/particles/p-kanban-4.tsx",
+      "content": "\"use client\";\n\nimport { useState } from \"react\";\nimport {\n  type SortableValue,\n  useSortable,\n} from \"@/registry/default/hooks/use-sortable\";\nimport { cn } from \"@/registry/default/lib/utils\";\nimport { Avatar, AvatarFallback } from \"@/registry/default/ui/avatar\";\n\ntype Card = { id: string; title: string };\n\nconst statuses = [\n  { id: \"todo\", label: \"To do\" },\n  { id: \"doing\", label: \"Doing\" },\n  { id: \"done\", label: \"Done\" },\n];\n\nconst lanes = [\n  { id: \"maya\", initials: \"ML\", name: \"Maya Lin\" },\n  { id: \"jonas\", initials: \"JR\", name: \"Jonas Reed\" },\n];\n\nconst initialBoard: SortableValue<Card> = {\n  \"jonas:doing\": [{ id: \"c4\", title: \"Refund flow\" }],\n  \"jonas:done\": [],\n  \"jonas:todo\": [{ id: \"c5\", title: \"Team invites\" }],\n  \"maya:doing\": [{ id: \"c2\", title: \"Search filters\" }],\n  \"maya:done\": [{ id: \"c3\", title: \"Login page\" }],\n  \"maya:todo\": [{ id: \"c1\", title: \"Usage charts\" }],\n};\n\nconst cardClassName =\n  \"cursor-grab rounded-lg border bg-card px-3 py-2 text-base text-card-foreground shadow-xs/5 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background sm:text-sm\";\n\nfunction getLabel(key: string): string {\n  const [lane, status] = key.split(\":\");\n  const person = lanes.find((item) => item.id === lane)?.name;\n  const column = statuses.find((item) => item.id === status)?.label;\n  return `${column} for ${person}`;\n}\n\nexport default function Particle() {\n  const [board, setBoard] = useState(initialBoard);\n  const sortable = useSortable({\n    getContainerLabel: getLabel,\n    getItemLabel: (card) => card.title,\n    onValueChange: setBoard,\n    value: board,\n  });\n\n  return (\n    <div className=\"w-full overflow-x-auto\">\n      <div className=\"grid min-w-[40rem] grid-cols-[auto_repeat(3,minmax(0,1fr))] gap-2\">\n        <div />\n        {statuses.map((status) => (\n          <div\n            className=\"px-1 font-medium text-base sm:text-sm\"\n            key={status.id}\n          >\n            {status.label}\n          </div>\n        ))}\n        {lanes.map((lane) => (\n          <div className=\"contents\" key={lane.id}>\n            <div className=\"flex flex-col items-center gap-1 pt-2 text-muted-foreground text-sm sm:text-xs\">\n              <Avatar className=\"size-7 sm:size-6\">\n                <AvatarFallback className=\"text-xs\">\n                  {lane.initials}\n                </AvatarFallback>\n              </Avatar>\n              {lane.name.split(\" \")[0]}\n            </div>\n            {statuses.map((status) => {\n              const key = `${lane.id}:${status.id}`;\n              return (\n                <div\n                  className=\"flex min-h-20 flex-col gap-2 rounded-xl bg-muted/72 p-2\"\n                  key={key}\n                  {...sortable.getContainerProps(key)}\n                >\n                  {(sortable.value[key] ?? []).map((card) => (\n                    <div\n                      className={cn(cardClassName, \"data-dragging:opacity-50\")}\n                      key={card.id}\n                      {...sortable.getItemProps(card)}\n                    >\n                      {card.title}\n                    </div>\n                  ))}\n                </div>\n              );\n            })}\n          </div>\n        ))}\n      </div>\n      {sortable.active?.reason === \"pointer\" && (\n        <div\n          className={cn(cardClassName, \"z-50 shadow-lg\")}\n          {...sortable.getOverlayProps()}\n        >\n          {sortable.active.item.title}\n        </div>\n      )}\n      <div {...sortable.getAnnouncerProps()} />\n    </div>\n  );\n}\n",
+      "type": "registry:block"
+    }
+  ],
+  "meta": {
+    "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-4xl",
+    "colSpan": 2
+  },
+  "categories": [
+    "kanban",
+    "card",
+    "avatar"
+  ],
+  "type": "registry:block"
+}

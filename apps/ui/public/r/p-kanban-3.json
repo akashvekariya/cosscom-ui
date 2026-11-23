@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "p-kanban-3",
+  "description": "Kanban board with column limits that refuse extra cards",
+  "registryDependencies": [
+    "@coss/badge",
+    "@coss/use-sortable"
+  ],
+  "files": [
+    {
+      "path": "registry/default/particles/p-kanban-3.tsx",
+      "content": "\"use client\";\n\nimport { useState } from \"react\";\nimport {\n  type SortableValue,\n  useSortable,\n} from \"@/registry/default/hooks/use-sortable\";\nimport { cn } from \"@/registry/default/lib/utils\";\nimport { Badge } from \"@/registry/default/ui/badge\";\n\ntype Card = { id: string; title: string };\n\nconst columns: { id: string; label: string; limit?: number }[] = [\n  { id: \"backlog\", label: \"Backlog\" },\n  { id: \"doing\", label: \"Doing\", limit: 2 },\n  { id: \"review\", label: \"Review\", limit: 1 },\n  { id: \"done\", label: \"Done\" },\n];\n\nconst initialBoard: SortableValue<Card> = {\n  backlog: [\n    { id: \"c1\", title: \"Audit the onboarding emails\" },\n    { id: \"c2\", title: \"Add SSO for teams\" },\n  ],\n  doing: [\n    { id: \"c3\", title: \"Fix the CSV export\" },\n    { id: \"c4\", title: \"Speed up search\" },\n  ],\n  done: [{ id: \"c6\", title: \"Ship dark mode\" }],\n  review: [{ id: \"c5\", title: \"New billing page\" }],\n};\n\nconst cardClassName =\n  \"cursor-grab rounded-lg border bg-card px-3 py-2.5 text-base text-card-foreground shadow-xs/5 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background sm:text-sm\";\n\nexport default function Particle() {\n  const [board, setBoard] = useState(initialBoard);\n  const sortable = useSortable({\n    canMove: ({ from, to }) => {\n      const limit = columns.find((column) => column.id === to.container)?.limit;\n      if (!limit || from.container === to.container) return true;\n      return (board[to.container]?.length ?? 0) < limit;\n    },\n    getContainerLabel: (id) =>\n      columns.find((column) => column.id === id)?.label ?? id,\n    getItemLabel: (card) => card.title,\n    onValueChange: setBoard,\n    value: board,\n  });\n\n  return (\n    <div className=\"w-full overflow-x-auto\">\n      <div className=\"flex gap-3\">\n        {columns.map((column) => {\n          const cards = sortable.value[column.id] ?? [];\n          const full =\n            column.limit !== undefined && cards.length >= column.limit;\n          return (\n            <div\n              className=\"flex w-[min(16rem,75vw)] shrink-0 flex-col gap-2 rounded-xl bg-muted/72 p-2 transition-colors data-drop-refused:bg-destructive/8 data-drop-refused:ring-1 data-drop-refused:ring-destructive/48 sm:w-auto sm:min-w-40 sm:flex-1\"\n              key={column.id}\n              {...sortable.getContainerProps(column.id)}\n            >\n              <div className=\"flex items-center justify-between px-1 font-medium text-base sm:text-sm\">\n                {column.label}\n                <Badge variant={full ? \"warning\" : \"outline\"}>\n                  {column.limit\n                    ? `${cards.length}/${column.limit}`\n                    : cards.length}\n                </Badge>\n              </div>\n              <div className=\"flex min-h-24 flex-col gap-2\">\n                {cards.map((card) => (\n                  <div\n                    className={cn(\n                      cardClassName,\n                      \"data-drop-refused:border-destructive/64 data-dragging:opacity-50\",\n                    )}\n                    key={card.id}\n                    {...sortable.getItemProps(card)}\n                  >\n                    {card.title}\n                  </div>\n                ))}\n              </div>\n            </div>\n          );\n        })}\n      </div>\n      {sortable.active?.reason === \"pointer\" && (\n        <div\n          className={cn(\n            cardClassName,\n            \"z-50 shadow-lg data-drop-refused:border-destructive/64\",\n          )}\n          {...sortable.getOverlayProps()}\n        >\n          {sortable.active.item.title}\n        </div>\n      )}\n      <div {...sortable.getAnnouncerProps()} />\n    </div>\n  );\n}\n",
+      "type": "registry:block"
+    }
+  ],
+  "meta": {
+    "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-4xl",
+    "colSpan": 2
+  },
+  "categories": [
+    "kanban",
+    "card",
+    "badge"
+  ],
+  "type": "registry:block"
+}
