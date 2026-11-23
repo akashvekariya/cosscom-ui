@@ -83,9 +83,9 @@ const priorities = {
   },
 };
 
-const columns = [
+const columns: { id: string; label: string; limit?: number }[] = [
   { id: "todo", label: "To do" },
-  { id: "progress", label: "In progress" },
+  { id: "progress", label: "In progress", limit: 2 },
   { id: "review", label: "In review" },
   { id: "done", label: "Done" },
 ];
@@ -179,7 +179,7 @@ function TaskCard({
   return (
     <div
       className={cn(
-        "relative flex cursor-pointer flex-col gap-3 rounded-lg border bg-card p-3 text-base text-card-foreground shadow-xs/5 data-dragging:opacity-50 sm:text-sm",
+        "relative flex cursor-pointer flex-col gap-3 rounded-lg border bg-card p-3 text-base text-card-foreground shadow-xs/5 data-drop-refused:border-destructive/64 data-dragging:opacity-50 sm:text-sm",
         className,
       )}
       {...props}
@@ -245,6 +245,11 @@ export default function Particle() {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<Task | null>(null);
   const sortable = useSortable({
+    canMove: ({ from, to }) => {
+      const limit = columns.find((column) => column.id === to.container)?.limit;
+      if (!limit || from.container === to.container) return true;
+      return (board[to.container]?.length ?? 0) < limit;
+    },
     getContainerLabel: (id) =>
       columns.find((column) => column.id === id)?.label ?? id,
     getItemLabel: (task) => task.title,
@@ -263,15 +268,21 @@ export default function Particle() {
       <div className="flex gap-3">
         {columns.map((column) => {
           const tasks = sortable.value[column.id] ?? [];
+          const full =
+            column.limit !== undefined && tasks.length >= column.limit;
           return (
             <div
-              className="flex w-[min(18rem,80vw)] shrink-0 flex-col gap-2 rounded-xl bg-muted/72 p-2 sm:w-auto sm:min-w-52 sm:flex-1"
+              className="flex w-[min(18rem,80vw)] shrink-0 flex-col gap-2 rounded-xl bg-muted/72 p-2 transition-colors data-drop-refused:bg-destructive/8 data-drop-refused:ring-1 data-drop-refused:ring-destructive/48 data-drop-refused:ring-inset sm:w-auto sm:min-w-52 sm:flex-1"
               key={column.id}
               {...sortable.getContainerProps(column.id)}
             >
               <div className="flex items-center justify-between px-1 font-medium text-base sm:text-sm">
                 {column.label}
-                <Badge variant="outline">{tasks.length}</Badge>
+                <Badge variant={full ? "warning" : "outline"}>
+                  {column.limit
+                    ? `${tasks.length}/${column.limit}`
+                    : tasks.length}
+                </Badge>
               </div>
               <div className="flex min-h-32 flex-col gap-2">
                 {tasks.map((task) => (

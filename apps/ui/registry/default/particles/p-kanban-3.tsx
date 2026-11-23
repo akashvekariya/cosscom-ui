@@ -57,7 +57,7 @@ export default function Particle() {
             column.limit !== undefined && cards.length >= column.limit;
           return (
             <div
-              className="flex w-[min(16rem,75vw)] shrink-0 flex-col gap-2 rounded-xl bg-muted/72 p-2 transition-colors data-drop-refused:bg-destructive/8 data-drop-refused:ring-1 data-drop-refused:ring-destructive/48 sm:w-auto sm:min-w-40 sm:flex-1"
+              className="flex w-[min(16rem,75vw)] shrink-0 flex-col gap-2 rounded-xl bg-muted/72 p-2 transition-colors data-drop-refused:bg-destructive/8 data-drop-refused:ring-1 data-drop-refused:ring-destructive/48 data-drop-refused:ring-inset sm:w-auto sm:min-w-40 sm:flex-1"
               key={column.id}
               {...sortable.getContainerProps(column.id)}
             >
