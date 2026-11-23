@@ -253,8 +253,7 @@ export default function Particle() {
     getContainerLabel: (id) =>
       columns.find((column) => column.id === id)?.label ?? id,
     getItemLabel: (task) => task.title,
-    dragFromItem: true,
-    handle: true,
+    dragFrom: "both",
     onValueChange: setBoard,
     value: board,
   });
