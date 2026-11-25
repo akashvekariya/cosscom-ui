@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "p-flow-11",
+  "description": "Workflow with collapsible groups of steps",
+  "registryDependencies": [
+    "@coss/flow"
+  ],
+  "files": [
+    {
+      "path": "registry/default/particles/p-flow-11.tsx",
+      "content": "import {\n  BellIcon,\n  CalendarIcon,\n  KeyRoundIcon,\n  LaptopIcon,\n  LayersIcon,\n  MailIcon,\n  UserPlusIcon,\n  UsersIcon,\n} from \"lucide-react\";\nimport {\n  Flow,\n  FlowConnector,\n  FlowGroup,\n  FlowStep,\n} from \"@/registry/default/ui/flow\";\n\nexport default function Particle() {\n  return (\n    <Flow aria-label=\"Welcome a new employee\" className=\"w-full\">\n      <FlowStep\n        icon={<UserPlusIcon />}\n        kind=\"Starts when\"\n        title=\"A new employee is added\"\n        tone=\"trigger\"\n      />\n      <FlowConnector />\n      <FlowGroup\n        collapsible\n        defaultOpen={false}\n        icon={<LayersIcon />}\n        kind=\"Group\"\n        status={{ label: \"3 steps\" }}\n        title=\"Set up their accounts\"\n      >\n        <FlowConnector size={16} />\n        <FlowStep\n          icon={<KeyRoundIcon />}\n          kind=\"Create record\"\n          title=\"Create their login\"\n        />\n        <FlowConnector />\n        <FlowStep\n          icon={<LaptopIcon />}\n          kind=\"Create record\"\n          title=\"Order a laptop\"\n        />\n        <FlowConnector />\n        <FlowStep\n          icon={<UsersIcon />}\n          kind=\"Update record\"\n          title=\"Add them to their team\"\n        />\n      </FlowGroup>\n      <FlowConnector />\n      <FlowGroup\n        collapsible\n        icon={<LayersIcon />}\n        kind=\"Group\"\n        status={{ label: \"2 steps\" }}\n        title=\"Plan the first week\"\n      >\n        <FlowConnector size={16} />\n        <FlowStep\n          icon={<CalendarIcon />}\n          kind=\"Create record\"\n          title=\"Book a welcome meeting\"\n        />\n        <FlowConnector />\n        <FlowStep\n          icon={<MailIcon />}\n          kind=\"Send email\"\n          title=\"Send the first-week guide\"\n        />\n      </FlowGroup>\n      <FlowConnector />\n      <FlowStep\n        icon={<BellIcon />}\n        kind=\"Notify\"\n        title=\"Tell the manager they are ready\"\n      />\n    </Flow>\n  );\n}\n",
+      "type": "registry:block"
+    }
+  ],
+  "meta": {
+    "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-md"
+  },
+  "categories": [
+    "flow"
+  ],
+  "type": "registry:block"
+}

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "p-flow-9",
+  "description": "Workflow whose Yes and No paths join back into one line",
+  "registryDependencies": [
+    "@coss/flow"
+  ],
+  "files": [
+    {
+      "path": "registry/default/particles/p-flow-9.tsx",
+      "content": "import {\n  CircleCheckIcon,\n  ClockIcon,\n  CreditCardIcon,\n  FileTextIcon,\n  MailIcon,\n  ShoppingCartIcon,\n  SplitIcon,\n} from \"lucide-react\";\nimport {\n  Flow,\n  FlowBranch,\n  FlowConnector,\n  FlowPath,\n  FlowStep,\n} from \"@/registry/default/ui/flow\";\n\nexport default function Particle() {\n  return (\n    <Flow aria-label=\"Take payment for new orders\" className=\"w-full\">\n      <FlowStep\n        icon={<ShoppingCartIcon />}\n        kind=\"Starts when\"\n        title=\"An order is placed\"\n        tone=\"trigger\"\n      />\n      <FlowConnector />\n      <FlowStep icon={<SplitIcon />} kind=\"Check\" title=\"Is it paid by card?\" />\n      <FlowConnector size={16} />\n      <FlowBranch join label=\"Is it paid by card?\">\n        <FlowPath label=\"Yes\">\n          <FlowConnector size={16} />\n          <FlowStep\n            icon={<CreditCardIcon />}\n            kind=\"Charge\"\n            title=\"Charge the card\"\n          />\n        </FlowPath>\n        <FlowPath label=\"No\">\n          <FlowConnector size={16} />\n          <FlowStep\n            icon={<FileTextIcon />}\n            kind=\"Send email\"\n            title=\"Send an invoice\"\n          />\n          <FlowConnector />\n          <FlowStep\n            icon={<ClockIcon />}\n            kind=\"Wait\"\n            title=\"Wait until it is paid\"\n          />\n        </FlowPath>\n      </FlowBranch>\n      <FlowConnector size={16} />\n      <FlowStep\n        icon={<CircleCheckIcon />}\n        kind=\"Update record\"\n        title=\"Mark the order as paid\"\n      />\n      <FlowConnector />\n      <FlowStep\n        icon={<MailIcon />}\n        kind=\"Send email\"\n        title=\"Send the receipt\"\n      />\n    </Flow>\n  );\n}\n",
+      "type": "registry:block"
+    }
+  ],
+  "meta": {
+    "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-2xl",
+    "colSpan": 2
+  },
+  "categories": [
+    "flow"
+  ],
+  "type": "registry:block"
+}

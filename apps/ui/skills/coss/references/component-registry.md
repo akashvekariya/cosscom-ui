@@ -73,7 +73,7 @@ For optional **`portalProps`** on composed `*Popup` components and **toast** pro
 - **Skeleton** — Loading placeholder. `./references/primitives/skeleton.md`
 
 ## Workflows
-- **Flow** — Workflow steps stacked top to bottom, with checks, paths and status counts. `./references/primitives/flow.md`
+- **Flow** — Workflow steps stacked top to bottom, with checks, joins, loops, groups and status counts. `./references/primitives/flow.md`
 
 ## Actions
 - **Button** — Primary/secondary action trigger. `./references/primitives/button.md`

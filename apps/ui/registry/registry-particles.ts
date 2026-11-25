@@ -6149,4 +6149,43 @@ export const particles: ParticleItem[] = [
     ],
     type: "registry:block",
   },
+  {
+    categories: categories("flow"),
+    description: "Workflow whose Yes and No paths join back into one line",
+    files: [{ path: "particles/p-flow-9.tsx", type: "registry:block" }],
+    meta: {
+      className:
+        "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-2xl",
+      colSpan: 2,
+    },
+    name: "p-flow-9",
+    registryDependencies: ["@coss/flow"],
+    type: "registry:block",
+  },
+  {
+    categories: categories("flow"),
+    description:
+      "Workflow with a repeat group and a retry that goes back a step",
+    files: [{ path: "particles/p-flow-10.tsx", type: "registry:block" }],
+    meta: {
+      className:
+        "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-2xl",
+      colSpan: 2,
+    },
+    name: "p-flow-10",
+    registryDependencies: ["@coss/flow"],
+    type: "registry:block",
+  },
+  {
+    categories: categories("flow"),
+    description: "Workflow with collapsible groups of steps",
+    files: [{ path: "particles/p-flow-11.tsx", type: "registry:block" }],
+    meta: {
+      className:
+        "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-md",
+    },
+    name: "p-flow-11",
+    registryDependencies: ["@coss/flow"],
+    type: "registry:block",
+  },
 ];

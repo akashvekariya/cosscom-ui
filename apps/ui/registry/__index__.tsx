@@ -407,7 +407,7 @@ export const Index: Record<string, any> = {
     name: "flow",
     description: "",
     type: "registry:ui",
-    registryDependencies: ["@coss/badge","@coss/button","@coss/scroll-area","@coss/tooltip"],
+    registryDependencies: ["@coss/badge","@coss/button","@coss/collapsible","@coss/scroll-area","@coss/tooltip"],
     files: [{
       path: "registry/default/ui/flow.tsx",
       type: "registry:ui",
@@ -10871,6 +10871,60 @@ export const Index: Record<string, any> = {
     }],
     component: React.lazy(async () => {
       const mod = await import("@/registry/default/particles/p-flow-8.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: ["flow"],
+    meta: {"className":"**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-md"},
+  },
+  "p-flow-9": {
+    name: "p-flow-9",
+    description: "Workflow whose Yes and No paths join back into one line",
+    type: "registry:block",
+    registryDependencies: ["@coss/flow"],
+    files: [{
+      path: "registry/default/particles/p-flow-9.tsx",
+      type: "registry:block",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/particles/p-flow-9.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: ["flow"],
+    meta: {"className":"**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-2xl","colSpan":2},
+  },
+  "p-flow-10": {
+    name: "p-flow-10",
+    description: "Workflow with a repeat group and a retry that goes back a step",
+    type: "registry:block",
+    registryDependencies: ["@coss/flow"],
+    files: [{
+      path: "registry/default/particles/p-flow-10.tsx",
+      type: "registry:block",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/particles/p-flow-10.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: ["flow"],
+    meta: {"className":"**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-2xl","colSpan":2},
+  },
+  "p-flow-11": {
+    name: "p-flow-11",
+    description: "Workflow with collapsible groups of steps",
+    type: "registry:block",
+    registryDependencies: ["@coss/flow"],
+    files: [{
+      path: "registry/default/particles/p-flow-11.tsx",
+      type: "registry:block",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/particles/p-flow-11.tsx")
       const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
       return { default: mod.default || mod[exportName] }
     }),

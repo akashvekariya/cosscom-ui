@@ -24,6 +24,8 @@ import {
   FlowChip,
   FlowConnector,
   FlowEnd,
+  FlowGroup,
+  FlowJump,
   FlowPath,
   FlowStep,
 } from "@/components/ui/flow"
@@ -74,16 +76,23 @@ Theme: colors come from `--muted`, `--info`, `--warning`, `--destructive`, `--su
 
 Clickable step with a side panel: pass `onClick` and `selected`.
 
+Paths that join back: `<FlowBranch join>`, then `<FlowConnector size={16} />` and the next step. Paths ending in `FlowEnd` or `FlowJump` stay out of the join.
+
+Loops: a `FlowGroup` with a "Repeat" header for repeated steps; `<FlowJump>Back to …</FlowJump>` at the end of a path to retry an earlier step. No line is ever drawn back up.
+
+Groups: `<FlowGroup collapsible defaultOpen={false} title="…" status={{ label: "3 steps" }}>`; start its children with `<FlowConnector size={16} />`.
+
 ### More examples
 
-- `p-flow-1` to `p-flow-8`
+- `p-flow-1` to `p-flow-11`
 
 ## Common pitfalls
 
 - Forgetting connectors: parts are not joined automatically; place `FlowConnector` or `FlowAdd` between them.
 - Using 22px lines around a branch: the line into a branch and the line under each path label are `size={16}`.
 - Swapping `FlowAdd` for `FlowConnector` by hand to hide add buttons: set `editable={false}` on `Flow` instead.
-- Expecting joins or loops: paths do not merge back and nothing loops; those are not drawn yet.
+- Drawing a line back up for a loop: use a `FlowGroup` or a `FlowJump` instead.
+- Forgetting the 16px connector after a joined branch or at the start of a group.
 - Nesting branches more than two levels: the layout gets too wide.
 - Expecting the stacked layout from the window size: it follows the width of the `Flow` frame (below 38rem).
 
@@ -97,3 +106,6 @@ Clickable step with a side panel: pass `onClick` and `selected`.
 - design view with add buttons and an edit switch: `p-flow-6`
 - custom step content (chips, avatars, tags, switch): `p-flow-8`
 - stacked paths at phone width: `p-flow-7`
+- paths joining back: `p-flow-9`
+- repeat group and retry jump: `p-flow-10`
+- collapsible groups: `p-flow-11`

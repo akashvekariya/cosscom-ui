@@ -1,6 +1,6 @@
 ---
 title: Flow
-description: A workflow drawn as steps stacked top to bottom on a dotted canvas, with checks that split into paths, status counts and add buttons.
+description: A workflow drawn as steps stacked top to bottom on a dotted canvas, with checks that split and join, loops, groups, status counts and add buttons.
 ---
 
 <ComponentPreview
@@ -70,6 +70,8 @@ The parts are placed in reading order, top to bottom. Put a `FlowConnector` (or 
 | `FlowBranch` | The bracket under a check, holding its paths side by side |
 | `FlowPath` | One path of a branch: a pill label, then its own steps |
 | `FlowEnd` | The muted pill that ends a path |
+| `FlowGroup` | A framed set of steps with a header: a loop, or a group that folds away |
+| `FlowJump` | A pill that ends a path by going back to an earlier step |
 | `FlowChip` | The status pill, for building your own status content |
 
 ### Steps
@@ -95,6 +97,44 @@ Cards are 300px wide at the top level and 260px inside a path, and shrink on nar
 ### Branches
 
 A branch follows its check with a 16px line. Each path starts with its label, a 16px line, then its steps. A path is at least as wide as a step and grows with its content, and each path draws its own half of the bracket, so the bracket fits paths of any width. A branch can sit inside a path; keep it to two levels. When the paths do not fit, the surface scrolls sideways.
+
+### Joining paths
+
+```tsx
+<FlowBranch join label="Is it paid by card?">
+  <FlowPath label="Yes">…</FlowPath>
+  <FlowPath label="No">…</FlowPath>
+</FlowBranch>
+<FlowConnector size={16} />
+<FlowStep … />
+```
+
+With `join`, each path runs a line down to a bracket under the branch, mirroring the one above, and the flow carries on below it. A path that ends with `FlowEnd` or `FlowJump` stays out of the join.
+
+### Loops
+
+Two shapes, both top to bottom, with no line drawn back up the page:
+
+- **Repeat a set of steps:** put them in a `FlowGroup` whose header says what repeats, such as "Repeat: For each item in the order".
+- **Go back and try again:** end a path with `<FlowJump>Back to Charge the card</FlowJump>`. Say the limit in a status, such as "Up to 3 times".
+
+### Groups
+
+```tsx
+<FlowGroup
+  collapsible
+  defaultOpen={false}
+  icon={<LayersIcon />}
+  kind="Group"
+  title="Set up their accounts"
+  status={{ label: "3 steps" }}
+>
+  <FlowConnector size={16} />
+  <FlowStep … />
+</FlowGroup>
+```
+
+A group frames its steps under a header that looks like a step. Steps inside are 40px narrower than the group. With `collapsible`, the header becomes a button that folds the group down to a single card, which keeps long workflows short. `open` and `onOpenChange` control it.
 
 ### Narrow frames
 
@@ -170,12 +210,16 @@ For anything else, every part has a `data-slot`, and chips and steps have a `dat
 |----------------|-----|
 | Trigger, actions, waits, checks | `FlowStep` with `tone="trigger"` for the first |
 | Yes and No, or more paths | `FlowBranch` with one `FlowPath` each |
+| Paths that join back into one line | `FlowBranch join` |
+| Repeating steps, for each item or until done | `FlowGroup` with a "Repeat" header |
+| Trying again from an earlier step | `FlowJump` at the end of a path |
+| Folding a long section away | `FlowGroup collapsible` |
 | Checks inside paths | A `FlowBranch` inside a `FlowPath`, up to two levels |
 | Steps that run at the same time, error paths | A branch whose labels say so, such as "At the same time" or "If it fails" |
 | Calling another workflow | A step |
 | Runs, failures, skipped steps | `status` and `muted` |
 
-Not drawn yet: paths that join back into one line, loops that go back to an earlier step, and collapsing a group of steps.
+Lines never run back up the page: loops are a framed group or a jump pill, so the flow always reads top to bottom.
 
 ### Notices
 
@@ -189,7 +233,8 @@ Not drawn yet: paths that join back into one line, loops that go back to an earl
 
 - The flow is an ordered list. Each branch is a group named by its `label`, with one list per path named by the path label.
 - A step reads as its kind, then its title, then its status: "Wait: Wait 2 days, 12 waiting".
-- Lines and the bracket are hidden from screen readers. Tab moves through clickable steps and add buttons in reading order.
+- Lines and the bracket are hidden from screen readers. Tab moves through clickable steps, group headers and add buttons in reading order.
+- A group is its own list, named by its header. A collapsible header is a button that says whether it is open.
 - Give `Flow` an `aria-label` that names the workflow.
 - `muted` is visual only; say why in the title or status when it matters.
 - Nothing animates for people who ask for reduced motion.
@@ -252,6 +297,32 @@ Chips, people, tags and a switch in the cards.
   className="**:data-align:h-auto! **:data-align:overflow-visible!"
 />
 
+### Joining paths
+
+<ComponentPreview
+  name="p-flow-9"
+  align="start"
+  className="**:data-align:h-auto! **:data-align:overflow-visible!"
+/>
+
+### Loops
+
+A group that repeats for each item, and a retry that goes back to an earlier step.
+
+<ComponentPreview
+  name="p-flow-10"
+  align="start"
+  className="**:data-align:h-auto! **:data-align:overflow-visible!"
+/>
+
+### Groups
+
+<ComponentPreview
+  name="p-flow-11"
+  align="start"
+  className="**:data-align:h-auto! **:data-align:overflow-visible!"
+/>
+
 ### Phone width
 
 <ComponentPreview
@@ -306,12 +377,30 @@ Chips, people, tags and a switch in the cards.
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `label` | `string` | | The question the branch answers, usually the check's title |
+| `join` | `boolean` | `false` | Join the paths back into one line below |
 
 ### FlowPath
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `label` | `ReactNode` | | Pill at the top of the path, such as "Yes" |
+
+### FlowGroup
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `icon`, `kind`, `title`, `tone`, `status` | | | The header, as on `FlowStep` |
+| `collapsible` | `boolean` | `false` | Make the header a button that folds the group |
+| `open` | `boolean` | | Open state. Controlled |
+| `defaultOpen` | `boolean` | `true` | Initial open state |
+| `onOpenChange` | `(open) => void` | | Called when the group opens or closes |
+
+### FlowJump
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `ReactNode` | | Where it goes, such as "Back to Charge the card" |
+| `icon` | `ReactNode` | arrow up | Icon before the text |
 
 ### FlowChip
 

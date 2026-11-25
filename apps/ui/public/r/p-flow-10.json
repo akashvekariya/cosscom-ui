@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "p-flow-10",
+  "description": "Workflow with a repeat group and a retry that goes back a step",
+  "registryDependencies": [
+    "@coss/flow"
+  ],
+  "files": [
+    {
+      "path": "registry/default/particles/p-flow-10.tsx",
+      "content": "import {\n  BoxIcon,\n  ClockIcon,\n  CreditCardIcon,\n  MailIcon,\n  PackageCheckIcon,\n  RepeatIcon,\n  ShoppingCartIcon,\n  SplitIcon,\n} from \"lucide-react\";\nimport {\n  Flow,\n  FlowBranch,\n  FlowConnector,\n  FlowEnd,\n  FlowGroup,\n  FlowJump,\n  FlowPath,\n  FlowStep,\n} from \"@/registry/default/ui/flow\";\n\nexport default function Particle() {\n  return (\n    <Flow aria-label=\"Fulfil new orders\" className=\"w-full\">\n      <FlowStep\n        icon={<ShoppingCartIcon />}\n        kind=\"Starts when\"\n        title=\"An order is placed\"\n        tone=\"trigger\"\n      />\n      <FlowConnector />\n      <FlowGroup\n        icon={<RepeatIcon />}\n        kind=\"Repeat\"\n        status={{ label: \"Each item\" }}\n        title=\"For each item in the order\"\n      >\n        <FlowConnector size={16} />\n        <FlowStep\n          icon={<BoxIcon />}\n          kind=\"Update record\"\n          title=\"Reserve the item\"\n        />\n        <FlowConnector />\n        <FlowStep\n          icon={<PackageCheckIcon />}\n          kind=\"Create record\"\n          title=\"Add it to the packing list\"\n        />\n      </FlowGroup>\n      <FlowConnector />\n      <FlowStep\n        icon={<CreditCardIcon />}\n        kind=\"Charge\"\n        title=\"Charge the card\"\n      />\n      <FlowConnector />\n      <FlowStep\n        icon={<SplitIcon />}\n        kind=\"Check\"\n        title=\"Did the payment go through?\"\n      />\n      <FlowConnector size={16} />\n      <FlowBranch label=\"Did the payment go through?\">\n        <FlowPath label=\"Yes\">\n          <FlowConnector size={16} />\n          <FlowStep\n            icon={<MailIcon />}\n            kind=\"Send email\"\n            title=\"Confirm the order\"\n          />\n          <FlowConnector />\n          <FlowEnd>Done</FlowEnd>\n        </FlowPath>\n        <FlowPath label=\"No\">\n          <FlowConnector size={16} />\n          <FlowStep\n            icon={<ClockIcon />}\n            kind=\"Wait\"\n            status={{ label: \"Up to 3 times\" }}\n            title=\"Wait 1 hour\"\n          />\n          <FlowConnector />\n          <FlowJump>Back to Charge the card</FlowJump>\n        </FlowPath>\n      </FlowBranch>\n    </Flow>\n  );\n}\n",
+      "type": "registry:block"
+    }
+  ],
+  "meta": {
+    "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-2xl",
+    "colSpan": 2
+  },
+  "categories": [
+    "flow"
+  ],
+  "type": "registry:block"
+}
