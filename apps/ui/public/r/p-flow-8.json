@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "p-flow-8",
+  "description": "Workflow steps with custom content: chips, people, tags and a switch",
+  "registryDependencies": [
+    "@coss/avatar",
+    "@coss/badge",
+    "@coss/flow",
+    "@coss/switch"
+  ],
+  "files": [
+    {
+      "path": "registry/default/particles/p-flow-8.tsx",
+      "content": "import {\n  CircleCheckIcon,\n  ReceiptIcon,\n  SendIcon,\n  UserCheckIcon,\n} from \"lucide-react\";\nimport {\n  Avatar,\n  AvatarFallback,\n  AvatarGroup,\n} from \"@/registry/default/ui/avatar\";\nimport { Badge } from \"@/registry/default/ui/badge\";\nimport {\n  Flow,\n  FlowChip,\n  FlowConnector,\n  FlowStep,\n} from \"@/registry/default/ui/flow\";\nimport { Switch } from \"@/registry/default/ui/switch\";\n\nconst approvers = [\"NE\", \"EW\", \"PS\"];\n\nexport default function Particle() {\n  return (\n    <Flow aria-label=\"Approve expense claims\" className=\"w-full\">\n      <FlowStep\n        icon={<ReceiptIcon />}\n        kind=\"Starts when\"\n        status={{ label: \"4 running\", tone: \"running\" }}\n        title=\"An expense claim is sent\"\n        tone=\"trigger\"\n      />\n      <FlowConnector />\n      <FlowStep\n        icon={<UserCheckIcon />}\n        kind=\"Approve\"\n        status={\n          <AvatarGroup\n            aria-label=\"3 approvers\"\n            className=\"[--avatar-overlap:--spacing(1)] [--avatar-size:--spacing(6)]\"\n          >\n            {approvers.map((initials) => (\n              <Avatar className=\"size-6 text-[0.625rem]\" key={initials}>\n                <AvatarFallback>{initials}</AvatarFallback>\n              </Avatar>\n            ))}\n          </AvatarGroup>\n        }\n        title=\"A manager approves it\"\n      >\n        <Badge size=\"sm\" variant=\"outline\">\n          Over $500\n        </Badge>\n        Within 2 days\n      </FlowStep>\n      <FlowConnector />\n      <FlowStep\n        icon={<SendIcon />}\n        kind=\"Notify\"\n        status={<Switch aria-label=\"Notify step is on\" defaultChecked />}\n        title=\"Tell the finance team\"\n      >\n        To #finance\n      </FlowStep>\n      <FlowConnector />\n      <FlowStep\n        icon={<CircleCheckIcon />}\n        kind=\"Update record\"\n        status={\n          <>\n            <FlowChip tone=\"done\">212 done</FlowChip>\n            <FlowChip tone=\"failed\">2 failed</FlowChip>\n          </>\n        }\n        title=\"Mark it as approved\"\n      />\n    </Flow>\n  );\n}\n",
+      "type": "registry:block"
+    }
+  ],
+  "meta": {
+    "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-md"
+  },
+  "categories": [
+    "flow"
+  ],
+  "type": "registry:block"
+}

@@ -34,6 +34,23 @@ import {
 } from "@/registry/default/ui/field";
 import { Flow, FlowConnector, FlowStep } from "@/registry/default/ui/flow";
 import { Input } from "@/registry/default/ui/input";
+import { Label } from "@/registry/default/ui/label";
+import {
+  NumberField,
+  NumberFieldDecrement,
+  NumberFieldGroup,
+  NumberFieldIncrement,
+  NumberFieldInput,
+} from "@/registry/default/ui/number-field";
+import {
+  Select,
+  SelectItem,
+  SelectPopup,
+  SelectTrigger,
+  SelectValue,
+} from "@/registry/default/ui/select";
+import { Switch } from "@/registry/default/ui/switch";
+import { Textarea } from "@/registry/default/ui/textarea";
 
 type Step = {
   id: string;
@@ -76,6 +93,92 @@ const initialSteps: Step[] = [
   },
 ];
 
+const stages = [
+  { label: "Won", value: "won" },
+  { label: "Lost", value: "lost" },
+  { label: "Proposal sent", value: "proposal" },
+];
+
+const units = [
+  { label: "Hours", value: "hours" },
+  { label: "Days", value: "days" },
+  { label: "Weeks", value: "weeks" },
+];
+
+const recipients = [
+  { label: "Deal owner", value: "owner" },
+  { label: "Sales team channel", value: "team" },
+];
+
+function SelectField({
+  label,
+  items,
+  defaultValue,
+}: {
+  label: string;
+  items: { label: string; value: string }[];
+  defaultValue: string;
+}) {
+  return (
+    <Field>
+      <FieldLabel>{label}</FieldLabel>
+      <Select defaultValue={defaultValue} items={items}>
+        <SelectTrigger className="min-w-0">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectPopup>
+          {items.map((item) => (
+            <SelectItem key={item.value} value={item.value}>
+              {item.label}
+            </SelectItem>
+          ))}
+        </SelectPopup>
+      </Select>
+    </Field>
+  );
+}
+
+// Each kind of step brings its own settings; the panel can hold any fields.
+function StepSettings({ kind }: { kind: string }) {
+  if (kind === "Starts when") {
+    return <SelectField defaultValue="won" items={stages} label="Deal stage" />;
+  }
+  if (kind === "Create record") {
+    return (
+      <Label>
+        <Switch defaultChecked />
+        Copy tasks from the template
+      </Label>
+    );
+  }
+  if (kind === "Wait") {
+    return (
+      <div className="grid grid-cols-2 gap-3 *:min-w-0">
+        <Field>
+          <FieldLabel>Wait for</FieldLabel>
+          <NumberField defaultValue={2} min={1}>
+            <NumberFieldGroup>
+              <NumberFieldDecrement />
+              <NumberFieldInput />
+              <NumberFieldIncrement />
+            </NumberFieldGroup>
+          </NumberField>
+        </Field>
+        <SelectField defaultValue="days" items={units} label="Unit" />
+      </div>
+    );
+  }
+  return (
+    <>
+      <SelectField defaultValue="owner" items={recipients} label="Send to" />
+      <Field>
+        <FieldLabel>Message</FieldLabel>
+        <Textarea defaultValue="Your deal is won. Please book the kickoff." />
+      </Field>
+    </>
+  );
+}
+
 export default function Particle() {
   const isWide = useMediaQuery("lg");
   const [steps, setSteps] = useState(initialSteps);
@@ -90,19 +193,22 @@ export default function Particle() {
       current.map((step) => (step.id === activeId ? { ...step, title } : step)),
     );
 
-  const nameField = (
-    <Field>
-      <FieldLabel>Step name</FieldLabel>
-      <Input
-        onChange={(event) => rename(event.target.value)}
-        type="text"
-        value={selected?.title ?? ""}
-      />
-      <FieldDescription>
-        Write it as a plain sentence, such as “Wait 2 days”.
-      </FieldDescription>
-    </Field>
-  );
+  const settings = selected ? (
+    <div className="flex flex-col gap-4" key={selected.id}>
+      <Field>
+        <FieldLabel>Step name</FieldLabel>
+        <Input
+          onChange={(event) => rename(event.target.value)}
+          type="text"
+          value={selected?.title ?? ""}
+        />
+        <FieldDescription>
+          Write it as a plain sentence, such as “Wait 2 days”.
+        </FieldDescription>
+      </Field>
+      <StepSettings kind={selected.kind} />
+    </div>
+  ) : null;
 
   return (
     <div className="flex w-full items-start gap-4">
@@ -150,7 +256,7 @@ export default function Particle() {
               </Button>
             </CardAction>
           </CardHeader>
-          <CardPanel>{nameField}</CardPanel>
+          <CardPanel>{settings}</CardPanel>
         </Card>
       ) : null}
       <Drawer
@@ -163,7 +269,7 @@ export default function Particle() {
             <DrawerTitle>{selected?.kind}</DrawerTitle>
             <DrawerDescription>{selected?.description}</DrawerDescription>
           </DrawerHeader>
-          <DrawerPanel>{nameField}</DrawerPanel>
+          <DrawerPanel>{settings}</DrawerPanel>
         </DrawerPopup>
       </Drawer>
     </div>

@@ -10809,7 +10809,7 @@ export const Index: Record<string, any> = {
     name: "p-flow-5",
     description: "Selected workflow step with its settings in a side panel",
     type: "registry:block",
-    registryDependencies: ["@coss/button","@coss/card","@coss/drawer","@coss/field","@coss/flow","@coss/input","@coss/use-media-query"],
+    registryDependencies: ["@coss/button","@coss/card","@coss/drawer","@coss/field","@coss/flow","@coss/input","@coss/label","@coss/number-field","@coss/select","@coss/switch","@coss/textarea","@coss/use-media-query"],
     files: [{
       path: "registry/default/particles/p-flow-5.tsx",
       type: "registry:block",
@@ -10825,9 +10825,9 @@ export const Index: Record<string, any> = {
   },
   "p-flow-6": {
     name: "p-flow-6",
-    description: "Workflow editor with an add button on every line",
+    description: "Workflow editor with add buttons that show only while editing",
     type: "registry:block",
-    registryDependencies: ["@coss/flow"],
+    registryDependencies: ["@coss/flow","@coss/label","@coss/switch"],
     files: [{
       path: "registry/default/particles/p-flow-6.tsx",
       type: "registry:block",
@@ -10858,6 +10858,24 @@ export const Index: Record<string, any> = {
     }),
     categories: ["flow"],
     meta: {"className":"**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-sm"},
+  },
+  "p-flow-8": {
+    name: "p-flow-8",
+    description: "Workflow steps with custom content: chips, people, tags and a switch",
+    type: "registry:block",
+    registryDependencies: ["@coss/avatar","@coss/badge","@coss/flow","@coss/switch"],
+    files: [{
+      path: "registry/default/particles/p-flow-8.tsx",
+      type: "registry:block",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/particles/p-flow-8.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: ["flow"],
+    meta: {"className":"**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-md"},
   },
   "fonts": {
     name: "fonts",

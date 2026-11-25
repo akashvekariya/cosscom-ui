@@ -12588,6 +12588,11 @@
         "@coss/field",
         "@coss/flow",
         "@coss/input",
+        "@coss/label",
+        "@coss/number-field",
+        "@coss/select",
+        "@coss/switch",
+        "@coss/textarea",
         "@coss/use-media-query"
       ],
       "type": "registry:block"
@@ -12596,7 +12601,7 @@
       "categories": [
         "flow"
       ],
-      "description": "Workflow editor with an add button on every line",
+      "description": "Workflow editor with add buttons that show only while editing",
       "files": [
         {
           "path": "registry/default/particles/p-flow-6.tsx",
@@ -12609,7 +12614,9 @@
       },
       "name": "p-flow-6",
       "registryDependencies": [
-        "@coss/flow"
+        "@coss/flow",
+        "@coss/label",
+        "@coss/switch"
       ],
       "type": "registry:block"
     },
@@ -12630,6 +12637,29 @@
       "name": "p-flow-7",
       "registryDependencies": [
         "@coss/flow"
+      ],
+      "type": "registry:block"
+    },
+    {
+      "categories": [
+        "flow"
+      ],
+      "description": "Workflow steps with custom content: chips, people, tags and a switch",
+      "files": [
+        {
+          "path": "registry/default/particles/p-flow-8.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "meta": {
+        "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-md"
+      },
+      "name": "p-flow-8",
+      "registryDependencies": [
+        "@coss/avatar",
+        "@coss/badge",
+        "@coss/flow",
+        "@coss/switch"
       ],
       "type": "registry:block"
     },

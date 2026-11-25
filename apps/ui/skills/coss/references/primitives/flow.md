@@ -21,6 +21,7 @@ import {
   Flow,
   FlowAdd,
   FlowBranch,
+  FlowChip,
   FlowConnector,
   FlowEnd,
   FlowPath,
@@ -65,19 +66,24 @@ Runs view counts:
 <FlowStep kind="Wait" title="Wait 2 days" status={{ label: "12 waiting", tone: "waiting" }} />
 ```
 
-Design view: replace a `FlowConnector` with `<FlowAdd onClick={...} />`.
+Design view: put `<FlowAdd onClick={...} />` on every line and toggle `<Flow editable={editing}>`; when not editable each add becomes a plain line of its `size` (22, or 16 into a branch and under a path label).
+
+Custom content: `status` takes `{ label, tone }` or any element (several `FlowChip`s, avatars, a switch); children show under the title.
+
+Theme: colors come from `--muted`, `--info`, `--warning`, `--destructive`, `--success`; override `--flow-line`, `--flow-dot` and `--flow-step-width` on a parent.
 
 Clickable step with a side panel: pass `onClick` and `selected`.
 
 ### More examples
 
-- `p-flow-1` to `p-flow-7`
+- `p-flow-1` to `p-flow-8`
 
 ## Common pitfalls
 
 - Forgetting connectors: parts are not joined automatically; place `FlowConnector` or `FlowAdd` between them.
 - Using 22px lines around a branch: the line into a branch and the line under each path label are `size={16}`.
-- Status text without a number: a status is always a number and a word ("3 failed").
+- Swapping `FlowAdd` for `FlowConnector` by hand to hide add buttons: set `editable={false}` on `Flow` instead.
+- Expecting joins or loops: paths do not merge back and nothing loops; those are not drawn yet.
 - Nesting branches more than two levels: the layout gets too wide.
 - Expecting the stacked layout from the window size: it follows the width of the `Flow` frame (below 38rem).
 
@@ -88,5 +94,6 @@ Clickable step with a side panel: pass `onClick` and `selected`.
 - check inside a path: `p-flow-3`
 - runs view with counts, paused notice and a muted step: `p-flow-4`
 - selected step with settings beside the flow: `p-flow-5`
-- design view with add buttons: `p-flow-6`
+- design view with add buttons and an edit switch: `p-flow-6`
+- custom step content (chips, avatars, tags, switch): `p-flow-8`
 - stacked paths at phone width: `p-flow-7`

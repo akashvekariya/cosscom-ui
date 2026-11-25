@@ -70,6 +70,7 @@ The parts are placed in reading order, top to bottom. Put a `FlowConnector` (or 
 | `FlowBranch` | The bracket under a check, holding its paths side by side |
 | `FlowPath` | One path of a branch: a pill label, then its own steps |
 | `FlowEnd` | The muted pill that ends a path |
+| `FlowChip` | The status pill, for building your own status content |
 
 ### Steps
 
@@ -85,7 +86,7 @@ The parts are placed in reading order, top to bottom. Put a `FlowConnector` (or 
 - `kind` names the step in a few words ("Starts when", "Wait", "Check"); it stays on one line.
 - `title` is a plain sentence; it wraps to two lines.
 - `tone="trigger"` tints the icon tile. Color appears only there and on status.
-- `status` is a number and a word, such as "128 runs" or "3 failed". Tones are `neutral`, `waiting`, `failed` and `done`.
+- `status` is usually a number and a word, such as "128 runs" or "3 failed". Tones are `neutral`, `running`, `waiting`, `failed` and `done`.
 - `muted` dims a step, for example one that no run has reached.
 - Pass `onClick` and the card becomes a button; `selected` draws a ring around it.
 
@@ -98,6 +99,83 @@ A branch follows its check with a 16px line. Each path starts with its label, a 
 ### Narrow frames
 
 When the frame is narrower than 38rem (608px), the paths stack: each label becomes a small heading with its steps indented under it. The same markup serves both layouts; the switch is a container query on `Flow`, so it follows the space the flow has, not the window.
+
+### Editing
+
+```tsx
+<Flow editable={editing}>
+  <FlowStep … />
+  <FlowAdd onClick={() => addStep(1)} />
+  <FlowStep … />
+  <FlowAdd size={16} onClick={() => addStep(2)} />
+  <FlowBranch …>…</FlowBranch>
+</Flow>
+```
+
+Write the flow once with `FlowAdd` on every line. While `editable` is true each one shows a plus button; when it is false the same markup draws plain lines. `size` on `FlowAdd` is the line it stands in for: 22 between steps, 16 into a branch and under a path label.
+
+### Custom content
+
+Every part of a step takes any content, so the card can show whatever your workflow needs:
+
+```tsx
+<FlowStep
+  icon={<img alt="" src="/logos/crm.svg" />}
+  kind="Approve"
+  title="A manager approves it"
+  status={
+    <>
+      <FlowChip tone="done">212 done</FlowChip>
+      <FlowChip tone="failed">2 failed</FlowChip>
+    </>
+  }
+>
+  <Badge size="sm" variant="outline">Over $500</Badge>
+  Within 2 days
+</FlowStep>
+```
+
+- `status` takes `{ label, tone }` for one chip, or any element instead: several chips, avatars, a switch, a time.
+- Children appear under the title, for extra details such as tags, a recipient or a schedule.
+- `icon` can be any element, including an app logo. `kind` is optional.
+- `render` swaps the card element itself, for example to make it a link.
+- What a settings panel shows is up to you; `FlowStep` only reports clicks and shows `selected`.
+
+### Theming
+
+Flow uses the theme tokens, so a theme recolors every flow:
+
+| Token | Used for |
+|-------|----------|
+| `--muted` | Canvas, icon tiles and neutral chips |
+| `--card`, `--border` | Cards and pills |
+| `--info` | The trigger tile and `running` |
+| `--warning` | `waiting`; also use it for a paused notice |
+| `--destructive` | `failed` |
+| `--success` | `done` |
+
+Flow also reads three variables, set them on any parent or in your theme:
+
+| Variable | Default | Sets |
+|----------|---------|------|
+| `--flow-line` | foreground at 40% | Lines and the bracket |
+| `--flow-dot` | `--border` | The dot grid |
+| `--flow-step-width` | `300px`, `260px` in paths | Card width |
+
+For anything else, every part has a `data-slot`, and chips and steps have a `data-tone`, such as `[data-slot=flow-chip][data-tone=waiting]`.
+
+### What it covers
+
+| Workflow shape | How |
+|----------------|-----|
+| Trigger, actions, waits, checks | `FlowStep` with `tone="trigger"` for the first |
+| Yes and No, or more paths | `FlowBranch` with one `FlowPath` each |
+| Checks inside paths | A `FlowBranch` inside a `FlowPath`, up to two levels |
+| Steps that run at the same time, error paths | A branch whose labels say so, such as "At the same time" or "If it fails" |
+| Calling another workflow | A step |
+| Runs, failures, skipped steps | `status` and `muted` |
+
+Not drawn yet: paths that join back into one line, loops that go back to an earlier step, and collapsing a group of steps.
 
 ### Notices
 
@@ -156,10 +234,20 @@ Clicking a step selects it and shows its settings beside the flow. On narrow scr
 
 ### Design view
 
-An add button on every line.
+Add buttons on every line, shown only while editing.
 
 <ComponentPreview
   name="p-flow-6"
+  align="start"
+  className="**:data-align:h-auto! **:data-align:overflow-visible!"
+/>
+
+### Custom content
+
+Chips, people, tags and a switch in the cards.
+
+<ComponentPreview
+  name="p-flow-8"
   align="start"
   className="**:data-align:h-auto! **:data-align:overflow-visible!"
 />
@@ -179,6 +267,7 @@ An add button on every line.
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `dots` | `boolean` | `true` | Draw the dot grid |
+| `editable` | `boolean` | `true` | Show the plus buttons of `FlowAdd` |
 | `notice` | `ReactNode` | | Shown above the first step |
 | `aria-label` | `string` | | Names the workflow list |
 | `className` | `string` | | Classes on the frame; give it a height to scroll vertically |
@@ -188,10 +277,11 @@ An add button on every line.
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `icon` | `ReactNode` | | Icon in the tile |
-| `kind` | `ReactNode` | | The kind of step, on one line |
+| `kind` | `ReactNode` | | The kind of step, on one line; optional |
 | `title` | `ReactNode` | | A plain sentence, up to two lines |
 | `tone` | `"default" \| "trigger"` | `"default"` | Tint the tile for the step that starts the flow |
-| `status` | `{ label, tone? }` | | Chip at the right edge |
+| `status` | `{ label, tone? } \| ReactNode` | | A chip, or any content, at the right edge |
+| `children` | `ReactNode` | | Extra details under the title |
 | `selected` | `boolean` | `false` | Draw a ring |
 | `muted` | `boolean` | `false` | Dim the step |
 | `onClick` | `() => void` | | Makes the card a button |
@@ -208,6 +298,7 @@ An add button on every line.
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `label` | `string` | `"Add a step"` | Button name and tooltip |
+| `size` | `22 \| 16 \| 8` | `22` | The line it becomes when the flow is not editable |
 | `onClick` | `() => void` | | Called when pressed |
 
 ### FlowBranch
@@ -221,6 +312,12 @@ An add button on every line.
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `label` | `ReactNode` | | Pill at the top of the path, such as "Yes" |
+
+### FlowChip
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `tone` | `"neutral" \| "running" \| "waiting" \| "failed" \| "done"` | `"neutral"` | Color of the pill |
 
 ### FlowEnd
 

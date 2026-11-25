@@ -6096,13 +6096,19 @@ export const particles: ParticleItem[] = [
       "@coss/field",
       "@coss/flow",
       "@coss/input",
+      "@coss/label",
+      "@coss/number-field",
+      "@coss/select",
+      "@coss/switch",
+      "@coss/textarea",
       "@coss/use-media-query",
     ],
     type: "registry:block",
   },
   {
     categories: categories("flow"),
-    description: "Workflow editor with an add button on every line",
+    description:
+      "Workflow editor with add buttons that show only while editing",
     files: [{ path: "particles/p-flow-6.tsx", type: "registry:block" }],
     meta: {
       className:
@@ -6110,7 +6116,7 @@ export const particles: ParticleItem[] = [
       colSpan: 2,
     },
     name: "p-flow-6",
-    registryDependencies: ["@coss/flow"],
+    registryDependencies: ["@coss/flow", "@coss/label", "@coss/switch"],
     type: "registry:block",
   },
   {
@@ -6123,6 +6129,24 @@ export const particles: ParticleItem[] = [
     },
     name: "p-flow-7",
     registryDependencies: ["@coss/flow"],
+    type: "registry:block",
+  },
+  {
+    categories: categories("flow"),
+    description:
+      "Workflow steps with custom content: chips, people, tags and a switch",
+    files: [{ path: "particles/p-flow-8.tsx", type: "registry:block" }],
+    meta: {
+      className:
+        "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-md",
+    },
+    name: "p-flow-8",
+    registryDependencies: [
+      "@coss/avatar",
+      "@coss/badge",
+      "@coss/flow",
+      "@coss/switch",
+    ],
     type: "registry:block",
   },
 ];
