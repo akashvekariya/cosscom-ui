@@ -57,7 +57,7 @@ export function Workflow() {
 }
 ```
 
-The parts are placed in reading order, top to bottom. Put a `FlowConnector` (or a `FlowAdd`) between any two things that should be joined by a line.
+The parts are placed in reading order, top to bottom. Put a `FlowConnector` (or a `FlowAdd`) between any two things that should be joined by a line. Each line ends in a small arrowhead where it reaches the next step, so the direction is always clear; lines into a branch end at its bracket instead. Set `arrows={false}` on `Flow` for plain lines.
 
 ### Parts
 
@@ -198,7 +198,7 @@ Flow also reads three variables, set them on any parent or in your theme:
 
 | Variable | Default | Sets |
 |----------|---------|------|
-| `--flow-line` | foreground at 40% | Lines and the bracket |
+| `--flow-line` | foreground at 40% | Lines, arrowheads and the bracket |
 | `--flow-dot` | `--border` | The dot grid |
 | `--flow-step-width` | `300px`, `260px` in paths | Card width |
 
@@ -337,6 +337,7 @@ A group that repeats for each item, and a retry that goes back to an earlier ste
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
+| `arrows` | `boolean` | `true` | End each line with a small arrowhead |
 | `dots` | `boolean` | `true` | Draw the dot grid |
 | `editable` | `boolean` | `true` | Show the plus buttons of `FlowAdd` |
 | `notice` | `ReactNode` | | Shown above the first step |

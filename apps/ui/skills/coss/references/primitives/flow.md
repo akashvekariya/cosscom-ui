@@ -88,7 +88,7 @@ Groups: `<FlowGroup collapsible defaultOpen={false} title="…" status={{ label:
 
 ## Common pitfalls
 
-- Forgetting connectors: parts are not joined automatically; place `FlowConnector` or `FlowAdd` between them.
+- Forgetting connectors: parts are not joined automatically; place `FlowConnector` or `FlowAdd` between them. Lines end in a small arrowhead; `arrows={false}` on `Flow` turns them off.
 - Using 22px lines around a branch: the line into a branch and the line under each path label are `size={16}`.
 - Swapping `FlowAdd` for `FlowConnector` by hand to hide add buttons: set `editable={false}` on `Flow` instead.
 - Drawing a line back up for a loop: use a `FlowGroup` or a `FlowJump` instead.

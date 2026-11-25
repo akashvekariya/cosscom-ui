@@ -35,9 +35,30 @@ const chipToneClassName: Record<FlowStatusTone, string> = {
   waiting: "bg-warning/8 text-warning-foreground dark:bg-warning/16",
 };
 
-const FlowContext: React.Context<{ editable: boolean }> = createContext<{
-  editable: boolean;
-}>({ editable: true });
+const FlowContext: React.Context<{ editable: boolean; arrows: boolean }> =
+  createContext<{ editable: boolean; arrows: boolean }>({
+    arrows: true,
+    editable: true,
+  });
+
+// A small rounded arrowhead, 9 by 6px. One filled path, so a see-through
+// line colour stays even where the line meets it.
+function Arrowhead({ className }: { className?: string }): React.ReactElement {
+  return (
+    <svg
+      aria-hidden="true"
+      className={cn(
+        "h-1.5 w-[9px] shrink-0 text-[color:var(--flow-line,color-mix(in_srgb,var(--color-foreground)_40%,transparent))]",
+        className,
+      )}
+      data-slot="flow-arrow"
+      fill="currentColor"
+      viewBox="0 0 9 6"
+    >
+      <path d="M1.1 0H7.9Q9 0 8.34 0.88L5.16 5.12Q4.5 6 3.84 5.12L0.66 0.88Q0 0 1.1 0Z" />
+    </svg>
+  );
+}
 
 function isFlowStatus(status: unknown): status is FlowStatus {
   return (
@@ -134,6 +155,7 @@ const connectorHeight = {
 export function Flow({
   className,
   children,
+  arrows = true,
   dots = true,
   editable = true,
   notice,
@@ -141,12 +163,14 @@ export function Flow({
   "aria-labelledby": ariaLabelledBy,
   ...props
 }: Omit<React.ComponentProps<typeof ScrollArea>, "fill"> & {
+  /** Draw a small arrowhead where a line reaches the next step. */
+  arrows?: boolean;
   dots?: boolean;
   editable?: boolean;
   notice?: React.ReactNode;
 }): React.ReactElement {
   return (
-    <FlowContext.Provider value={{ editable }}>
+    <FlowContext.Provider value={{ arrows, editable }}>
       <ScrollArea
         className={cn(
           "@container h-auto rounded-[calc(var(--radius)+2px)] bg-muted [--flow-step-width:300px] @max-[38rem]:[&>[data-slot=scroll-area-viewport]>[data-slot=scroll-area-content]]:min-w-0!",
@@ -251,11 +275,13 @@ export function FlowConnector({
 }: React.ComponentProps<"li"> & {
   size?: keyof typeof connectorHeight;
 }): React.ReactElement {
+  const { arrows } = useContext(FlowContext);
+
   return (
     <li
       aria-hidden="true"
       className={cn(
-        "w-[1.5px] shrink-0 bg-[color:var(--flow-line,color-mix(in_srgb,var(--color-foreground)_40%,transparent))]",
+        "flex w-2 shrink-0 flex-col items-center",
         connectorHeight[size],
         // Stacked paths hide the lines that lead into a branch or a path label.
         "@max-[38rem]:in-data-[slot=flow-path]:first:hidden @max-[38rem]:[&:has(+[data-slot=flow-branch])]:invisible @max-[38rem]:[[data-slot=flow-branch]+&]:invisible",
@@ -263,7 +289,12 @@ export function FlowConnector({
       )}
       data-slot="flow-connector"
       {...props}
-    />
+    >
+      <span className="w-[1.5px] flex-1 bg-[color:var(--flow-line,color-mix(in_srgb,var(--color-foreground)_40%,transparent))]" />
+      {arrows ? (
+        <Arrowhead className="[[data-slot=flow-connector]:has(+[data-slot=flow-branch])>&]:hidden" />
+      ) : null}
+    </li>
   );
 }
 
@@ -277,7 +308,7 @@ export function FlowAdd({
   /** The line it stands in for when the flow is not editable. */
   size?: keyof typeof connectorHeight;
 }): React.ReactElement {
-  const { editable } = useContext(FlowContext);
+  const { arrows, editable } = useContext(FlowContext);
 
   if (!editable) return <FlowConnector size={size} />;
 
@@ -311,10 +342,12 @@ export function FlowAdd({
           {label}
         </TooltipPopup>
       </Tooltip>
-      <span
-        aria-hidden="true"
-        className="h-2 w-[1.5px] bg-[color:var(--flow-line,color-mix(in_srgb,var(--color-foreground)_40%,transparent))]"
-      />
+      <span aria-hidden="true" className="flex h-2 w-2 flex-col items-center">
+        <span className="w-[1.5px] flex-1 bg-[color:var(--flow-line,color-mix(in_srgb,var(--color-foreground)_40%,transparent))]" />
+        {arrows ? (
+          <Arrowhead className="[[data-slot=flow-add]:has(+[data-slot=flow-branch])_&]:hidden" />
+        ) : null}
+      </span>
     </li>
   );
 }
