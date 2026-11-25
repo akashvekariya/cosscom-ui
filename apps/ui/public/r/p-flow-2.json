@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "p-flow-2",
+  "description": "Workflow with a check that splits into Yes and No paths",
+  "registryDependencies": [
+    "@coss/flow"
+  ],
+  "files": [
+    {
+      "path": "registry/default/particles/p-flow-2.tsx",
+      "content": "import {\n  BellIcon,\n  ClockIcon,\n  FolderPlusIcon,\n  SplitIcon,\n  ZapIcon,\n} from \"lucide-react\";\nimport {\n  Flow,\n  FlowAdd,\n  FlowBranch,\n  FlowConnector,\n  FlowEnd,\n  FlowPath,\n  FlowStep,\n} from \"@/registry/default/ui/flow\";\n\nexport default function Particle() {\n  return (\n    <Flow aria-label=\"Start onboarding for won deals\" className=\"w-full\">\n      <FlowStep\n        icon={<ZapIcon />}\n        kind=\"Starts when\"\n        status={{ label: \"128 runs\" }}\n        title=\"A deal moves to Won\"\n        tone=\"trigger\"\n      />\n      <FlowConnector />\n      <FlowStep\n        icon={<FolderPlusIcon />}\n        kind=\"Create record\"\n        title=\"Create an onboarding project\"\n      />\n      <FlowAdd label=\"Add a step here\" />\n      <FlowStep\n        icon={<ClockIcon />}\n        kind=\"Wait\"\n        status={{ label: \"12 waiting\", tone: \"waiting\" }}\n        title=\"Wait 2 days\"\n      />\n      <FlowConnector />\n      <FlowStep\n        icon={<SplitIcon />}\n        kind=\"Check\"\n        title=\"Is the kickoff date set?\"\n      />\n      <FlowConnector size={16} />\n      <FlowBranch label=\"Is the kickoff date set?\">\n        <FlowPath label=\"Yes\">\n          <FlowConnector size={16} />\n          <FlowEnd>Done</FlowEnd>\n        </FlowPath>\n        <FlowPath label=\"No\">\n          <FlowConnector size={16} />\n          <FlowStep\n            icon={<BellIcon />}\n            kind=\"Notify\"\n            status={{ label: \"3 failed\", tone: \"failed\" }}\n            title=\"Notify the deal owner\"\n          />\n        </FlowPath>\n      </FlowBranch>\n    </Flow>\n  );\n}\n",
+      "type": "registry:block"
+    }
+  ],
+  "meta": {
+    "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-2xl",
+    "colSpan": 2
+  },
+  "categories": [
+    "flow"
+  ],
+  "type": "registry:block"
+}

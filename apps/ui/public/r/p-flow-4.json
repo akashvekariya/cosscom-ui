@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "p-flow-4",
+  "description": "Paused workflow showing run counts on its steps",
+  "registryDependencies": [
+    "@coss/alert",
+    "@coss/flow"
+  ],
+  "files": [
+    {
+      "path": "registry/default/particles/p-flow-4.tsx",
+      "content": "import {\n  BellIcon,\n  CircleCheckIcon,\n  ClockIcon,\n  MailIcon,\n  PauseIcon,\n  ReceiptIcon,\n  SplitIcon,\n} from \"lucide-react\";\nimport {\n  Alert,\n  AlertDescription,\n  AlertTitle,\n} from \"@/registry/default/ui/alert\";\nimport {\n  Flow,\n  FlowBranch,\n  FlowConnector,\n  FlowEnd,\n  FlowPath,\n  FlowStep,\n} from \"@/registry/default/ui/flow\";\n\nexport default function Particle() {\n  return (\n    <Flow\n      aria-label=\"Chase overdue invoices\"\n      className=\"w-full\"\n      notice={\n        <Alert className=\"bg-card\" variant=\"warning\">\n          <PauseIcon aria-hidden=\"true\" />\n          <AlertTitle>Paused</AlertTitle>\n          <AlertDescription>\n            New runs wait until you resume the workflow.\n          </AlertDescription>\n        </Alert>\n      }\n    >\n      <FlowStep\n        icon={<ReceiptIcon />}\n        kind=\"Starts when\"\n        status={{ label: \"342 runs\" }}\n        title=\"An invoice is past due\"\n        tone=\"trigger\"\n      />\n      <FlowConnector />\n      <FlowStep\n        icon={<MailIcon />}\n        kind=\"Send email\"\n        title=\"Send a payment reminder\"\n      />\n      <FlowConnector />\n      <FlowStep\n        icon={<ClockIcon />}\n        kind=\"Wait\"\n        status={{ label: \"58 waiting\", tone: \"waiting\" }}\n        title=\"Wait 3 days\"\n      />\n      <FlowConnector />\n      <FlowStep\n        icon={<SplitIcon />}\n        kind=\"Check\"\n        title=\"Has the invoice been paid?\"\n      />\n      <FlowConnector size={16} />\n      <FlowBranch label=\"Has the invoice been paid?\">\n        <FlowPath label=\"Yes\">\n          <FlowConnector size={16} />\n          <FlowStep\n            icon={<CircleCheckIcon />}\n            kind=\"Update record\"\n            muted\n            title=\"Mark the invoice as paid\"\n          />\n          <FlowConnector />\n          <FlowEnd>Done</FlowEnd>\n        </FlowPath>\n        <FlowPath label=\"No\">\n          <FlowConnector size={16} />\n          <FlowStep\n            icon={<BellIcon />}\n            kind=\"Notify\"\n            status={{ label: \"4 failed\", tone: \"failed\" }}\n            title=\"Tell the account owner\"\n          />\n        </FlowPath>\n      </FlowBranch>\n    </Flow>\n  );\n}\n",
+      "type": "registry:block"
+    }
+  ],
+  "meta": {
+    "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-2xl",
+    "colSpan": 2
+  },
+  "categories": [
+    "flow",
+    "warning"
+  ],
+  "type": "registry:block"
+}

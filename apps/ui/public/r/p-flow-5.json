@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "p-flow-5",
+  "description": "Selected workflow step with its settings in a side panel",
+  "registryDependencies": [
+    "@coss/button",
+    "@coss/card",
+    "@coss/drawer",
+    "@coss/field",
+    "@coss/flow",
+    "@coss/input",
+    "@coss/use-media-query"
+  ],
+  "files": [
+    {
+      "path": "registry/default/particles/p-flow-5.tsx",
+      "content": "\"use client\";\n\nimport {\n  BellIcon,\n  ClockIcon,\n  FolderPlusIcon,\n  type LucideIcon,\n  XIcon,\n  ZapIcon,\n} from \"lucide-react\";\nimport { Fragment, useState } from \"react\";\nimport { useMediaQuery } from \"@/registry/default/hooks/use-media-query\";\nimport { Button } from \"@/registry/default/ui/button\";\nimport {\n  Card,\n  CardAction,\n  CardDescription,\n  CardHeader,\n  CardPanel,\n  CardTitle,\n} from \"@/registry/default/ui/card\";\nimport {\n  Drawer,\n  DrawerDescription,\n  DrawerHeader,\n  DrawerPanel,\n  DrawerPopup,\n  DrawerTitle,\n} from \"@/registry/default/ui/drawer\";\nimport {\n  Field,\n  FieldDescription,\n  FieldLabel,\n} from \"@/registry/default/ui/field\";\nimport { Flow, FlowConnector, FlowStep } from \"@/registry/default/ui/flow\";\nimport { Input } from \"@/registry/default/ui/input\";\n\ntype Step = {\n  id: string;\n  icon: LucideIcon;\n  kind: string;\n  title: string;\n  description: string;\n  tone?: \"default\" | \"trigger\";\n};\n\nconst initialSteps: Step[] = [\n  {\n    description: \"Runs each time a deal’s stage changes to Won.\",\n    icon: ZapIcon,\n    id: \"trigger\",\n    kind: \"Starts when\",\n    title: \"A deal moves to Won\",\n    tone: \"trigger\",\n  },\n  {\n    description: \"Adds a project with the deal’s name and owner.\",\n    icon: FolderPlusIcon,\n    id: \"create\",\n    kind: \"Create record\",\n    title: \"Create an onboarding project\",\n  },\n  {\n    description: \"Holds the run, then carries on with the next step.\",\n    icon: ClockIcon,\n    id: \"wait\",\n    kind: \"Wait\",\n    title: \"Wait 2 days\",\n  },\n  {\n    description: \"Sends a message to the person who owns the deal.\",\n    icon: BellIcon,\n    id: \"notify\",\n    kind: \"Notify\",\n    title: \"Notify the deal owner\",\n  },\n];\n\nexport default function Particle() {\n  const isWide = useMediaQuery(\"lg\");\n  const [steps, setSteps] = useState(initialSteps);\n  const [selectedId, setSelectedId] = useState<string | null>(\"wait\");\n  const [drawerOpen, setDrawerOpen] = useState(false);\n  // Wide screens show the panel beside the flow; narrow ones use a drawer.\n  const activeId = isWide || drawerOpen ? selectedId : null;\n  const selected = steps.find((step) => step.id === activeId);\n\n  const rename = (title: string) =>\n    setSteps((current) =>\n      current.map((step) => (step.id === activeId ? { ...step, title } : step)),\n    );\n\n  const nameField = (\n    <Field>\n      <FieldLabel>Step name</FieldLabel>\n      <Input\n        onChange={(event) => rename(event.target.value)}\n        type=\"text\"\n        value={selected?.title ?? \"\"}\n      />\n      <FieldDescription>\n        Write it as a plain sentence, such as “Wait 2 days”.\n      </FieldDescription>\n    </Field>\n  );\n\n  return (\n    <div className=\"flex w-full items-start gap-4\">\n      <Flow\n        aria-label=\"Start onboarding for won deals\"\n        className=\"min-w-0 flex-1\"\n      >\n        {steps.map((step, index) => {\n          const Icon = step.icon;\n          return (\n            <Fragment key={step.id}>\n              {index > 0 ? <FlowConnector /> : null}\n              <FlowStep\n                icon={<Icon />}\n                kind={step.kind}\n                onClick={() => {\n                  setSelectedId(step.id);\n                  if (!isWide) setDrawerOpen(true);\n                }}\n                selected={step.id === activeId}\n                title={step.title}\n                tone={step.tone}\n              />\n            </Fragment>\n          );\n        })}\n      </Flow>\n      {isWide && selected ? (\n        <Card\n          aria-label={`${selected.kind} settings`}\n          className=\"w-72 shrink-0\"\n          render={<aside />}\n        >\n          <CardHeader>\n            <CardTitle>{selected.kind}</CardTitle>\n            <CardDescription>{selected.description}</CardDescription>\n            <CardAction>\n              <Button\n                aria-label=\"Close settings\"\n                onClick={() => setSelectedId(null)}\n                size=\"icon-sm\"\n                variant=\"ghost\"\n              >\n                <XIcon aria-hidden=\"true\" />\n              </Button>\n            </CardAction>\n          </CardHeader>\n          <CardPanel>{nameField}</CardPanel>\n        </Card>\n      ) : null}\n      <Drawer\n        onOpenChange={setDrawerOpen}\n        open={!isWide && drawerOpen}\n        position=\"right\"\n      >\n        <DrawerPopup showCloseButton>\n          <DrawerHeader>\n            <DrawerTitle>{selected?.kind}</DrawerTitle>\n            <DrawerDescription>{selected?.description}</DrawerDescription>\n          </DrawerHeader>\n          <DrawerPanel>{nameField}</DrawerPanel>\n        </DrawerPopup>\n      </Drawer>\n    </div>\n  );\n}\n",
+      "type": "registry:block"
+    }
+  ],
+  "meta": {
+    "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-2xl",
+    "colSpan": 2
+  },
+  "categories": [
+    "flow",
+    "drawer"
+  ],
+  "type": "registry:block"
+}

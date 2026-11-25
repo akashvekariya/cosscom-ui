@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "p-flow-6",
+  "description": "Workflow editor with an add button on every line",
+  "registryDependencies": [
+    "@coss/flow"
+  ],
+  "files": [
+    {
+      "path": "registry/default/particles/p-flow-6.tsx",
+      "content": "\"use client\";\n\nimport {\n  CirclePlusIcon,\n  FolderPlusIcon,\n  type LucideIcon,\n  MailIcon,\n  SplitIcon,\n  ZapIcon,\n} from \"lucide-react\";\nimport { Fragment, useState } from \"react\";\nimport {\n  Flow,\n  FlowAdd,\n  FlowBranch,\n  FlowEnd,\n  FlowPath,\n  FlowStep,\n} from \"@/registry/default/ui/flow\";\n\ntype Step = { id: string; icon: LucideIcon; kind: string; title: string };\ntype Lane = \"main\" | \"yes\" | \"no\";\n\nconst initialSteps: Record<Lane, Step[]> = {\n  main: [\n    {\n      icon: FolderPlusIcon,\n      id: \"create\",\n      kind: \"Create record\",\n      title: \"Create a task for the account owner\",\n    },\n  ],\n  no: [\n    {\n      icon: MailIcon,\n      id: \"email\",\n      kind: \"Send email\",\n      title: \"Ask the customer for a call\",\n    },\n  ],\n  yes: [],\n};\n\nlet nextId = 0;\n\nexport default function Particle() {\n  const [steps, setSteps] = useState(initialSteps);\n\n  const addStep = (lane: Lane, index: number) => {\n    nextId += 1;\n    const step: Step = {\n      icon: CirclePlusIcon,\n      id: `new-${nextId}`,\n      kind: \"New step\",\n      title: \"Choose what happens here\",\n    };\n    setSteps((current) => ({\n      ...current,\n      [lane]: [\n        ...current[lane].slice(0, index),\n        step,\n        ...current[lane].slice(index),\n      ],\n    }));\n  };\n\n  const renderLane = (lane: Lane) =>\n    steps[lane].map((step, index) => {\n      const Icon = step.icon;\n      return (\n        <Fragment key={step.id}>\n          <FlowStep icon={<Icon />} kind={step.kind} title={step.title} />\n          <FlowAdd onClick={() => addStep(lane, index + 1)} />\n        </Fragment>\n      );\n    });\n\n  return (\n    <Flow aria-label=\"Follow up on low survey scores\" className=\"w-full\">\n      <FlowStep\n        icon={<ZapIcon />}\n        kind=\"Starts when\"\n        title=\"A customer answers the survey\"\n        tone=\"trigger\"\n      />\n      <FlowAdd onClick={() => addStep(\"main\", 0)} />\n      {renderLane(\"main\")}\n      <FlowStep\n        icon={<SplitIcon />}\n        kind=\"Check\"\n        title=\"Is the score 6 or lower?\"\n      />\n      <FlowAdd onClick={() => addStep(\"main\", steps.main.length)} />\n      <FlowBranch label=\"Is the score 6 or lower?\">\n        <FlowPath label=\"Yes\">\n          <FlowAdd onClick={() => addStep(\"yes\", 0)} />\n          {renderLane(\"yes\")}\n          <FlowEnd>Done</FlowEnd>\n        </FlowPath>\n        <FlowPath label=\"No\">\n          <FlowAdd onClick={() => addStep(\"no\", 0)} />\n          {renderLane(\"no\")}\n          <FlowEnd>Done</FlowEnd>\n        </FlowPath>\n      </FlowBranch>\n    </Flow>\n  );\n}\n",
+      "type": "registry:block"
+    }
+  ],
+  "meta": {
+    "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-2xl",
+    "colSpan": 2
+  },
+  "categories": [
+    "flow"
+  ],
+  "type": "registry:block"
+}

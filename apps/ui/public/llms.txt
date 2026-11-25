@@ -38,6 +38,7 @@
 - [Empty](https://coss.com/ui/docs/components/empty.md): A container for displaying empty state information.
 - [Field](https://coss.com/ui/docs/components/field.md): A wrapper component for form inputs with labels and validation.
 - [Fieldset](https://coss.com/ui/docs/components/fieldset.md): A group of related form fields with a common label.
+- [Flow](https://coss.com/ui/docs/components/flow.md): A workflow drawn as steps stacked top to bottom on a dotted canvas, with checks that split into paths, status counts and add buttons.
 - [Form](https://coss.com/ui/docs/components/form.md): A complete form implementation with validation and submission handling.
 - [Frame](https://coss.com/ui/docs/components/frame.md): A container component for displaying content in a frame.
 - [Group](https://coss.com/ui/docs/components/group.md): A container component for grouping related content with consistent styling.

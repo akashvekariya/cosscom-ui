@@ -26,6 +26,7 @@ export const ui: Registry["items"] = [
       "@coss/empty",
       "@coss/field",
       "@coss/fieldset",
+      "@coss/flow",
       "@coss/form",
       "@coss/frame",
       "@coss/group",
@@ -367,6 +368,18 @@ export const ui: Registry["items"] = [
       },
     ],
     name: "fieldset",
+    type: "registry:ui",
+  },
+  {
+    dependencies: ["lucide-react"],
+    files: [{ path: "ui/flow.tsx", type: "registry:ui" }],
+    name: "flow",
+    registryDependencies: [
+      "@coss/badge",
+      "@coss/button",
+      "@coss/scroll-area",
+      "@coss/tooltip",
+    ],
     type: "registry:ui",
   },
   {

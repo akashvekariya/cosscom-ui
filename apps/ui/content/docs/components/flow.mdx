@@ -1,0 +1,229 @@
+---
+title: Flow
+description: A workflow drawn as steps stacked top to bottom on a dotted canvas, with checks that split into paths, status counts and add buttons.
+---
+
+<ComponentPreview
+  name="p-flow-2"
+  align="start"
+  className="**:data-align:h-auto! **:data-align:overflow-visible!"
+/>
+
+## Installation
+
+```bash
+npx shadcn@latest add @coss/flow
+```
+
+Flow is plain markup: a column of cards, lines and one bracket. There is no canvas library, no pan or zoom, and nothing is positioned or measured in script.
+
+## Usage
+
+```tsx
+import { BellIcon, SplitIcon, ZapIcon } from "lucide-react"
+import {
+  Flow,
+  FlowBranch,
+  FlowConnector,
+  FlowEnd,
+  FlowPath,
+  FlowStep,
+} from "@/components/ui/flow"
+
+export function Workflow() {
+  return (
+    <Flow aria-label="Start onboarding for won deals">
+      <FlowStep
+        icon={<ZapIcon />}
+        kind="Starts when"
+        title="A deal moves to Won"
+        tone="trigger"
+      />
+      <FlowConnector />
+      <FlowStep icon={<SplitIcon />} kind="Check" title="Is the kickoff date set?" />
+      <FlowConnector size={16} />
+      <FlowBranch label="Is the kickoff date set?">
+        <FlowPath label="Yes">
+          <FlowConnector size={16} />
+          <FlowEnd>Done</FlowEnd>
+        </FlowPath>
+        <FlowPath label="No">
+          <FlowConnector size={16} />
+          <FlowStep icon={<BellIcon />} kind="Notify" title="Notify the deal owner" />
+        </FlowPath>
+      </FlowBranch>
+    </Flow>
+  )
+}
+```
+
+The parts are placed in reading order, top to bottom. Put a `FlowConnector` (or a `FlowAdd`) between any two things that should be joined by a line.
+
+### Parts
+
+| Part | Draws |
+|------|-------|
+| `Flow` | The dotted surface. Centers one column and scrolls when the flow is wider or taller than its frame |
+| `FlowStep` | One card: an icon tile, the kind of step, a plain sentence and an optional status chip |
+| `FlowConnector` | The line between two things: 22px, or 16px around a branch, or 8px |
+| `FlowAdd` | A round plus button on the line, with a tooltip |
+| `FlowBranch` | The bracket under a check, holding its paths side by side |
+| `FlowPath` | One path of a branch: a pill label, then its own steps |
+| `FlowEnd` | The muted pill that ends a path |
+
+### Steps
+
+```tsx
+<FlowStep
+  icon={<ClockIcon />}
+  kind="Wait"
+  title="Wait 2 days"
+  status={{ label: "12 waiting", tone: "waiting" }}
+/>
+```
+
+- `kind` names the step in a few words ("Starts when", "Wait", "Check"); it stays on one line.
+- `title` is a plain sentence; it wraps to two lines.
+- `tone="trigger"` tints the icon tile. Color appears only there and on status.
+- `status` is a number and a word, such as "128 runs" or "3 failed". Tones are `neutral`, `waiting`, `failed` and `done`.
+- `muted` dims a step, for example one that no run has reached.
+- Pass `onClick` and the card becomes a button; `selected` draws a ring around it.
+
+Cards are 300px wide at the top level and 260px inside a path, and shrink on narrow screens.
+
+### Branches
+
+A branch follows its check with a 16px line. Each path starts with its label, a 16px line, then its steps. A path is at least as wide as a step and grows with its content, and each path draws its own half of the bracket, so the bracket fits paths of any width. A branch can sit inside a path; keep it to two levels. When the paths do not fit, the surface scrolls sideways.
+
+### Narrow frames
+
+When the frame is narrower than 38rem (608px), the paths stack: each label becomes a small heading with its steps indented under it. The same markup serves both layouts; the switch is a container query on `Flow`, so it follows the space the flow has, not the window.
+
+### Notices
+
+```tsx
+<Flow notice={<Alert variant="warning">…</Alert>}>…</Flow>
+```
+
+`notice` sits above the first step, for example to say the workflow is paused.
+
+## Accessibility
+
+- The flow is an ordered list. Each branch is a group named by its `label`, with one list per path named by the path label.
+- A step reads as its kind, then its title, then its status: "Wait: Wait 2 days, 12 waiting".
+- Lines and the bracket are hidden from screen readers. Tab moves through clickable steps and add buttons in reading order.
+- Give `Flow` an `aria-label` that names the workflow.
+- `muted` is visual only; say why in the title or status when it matters.
+- Nothing animates for people who ask for reduced motion.
+
+## Examples
+
+### Steps in a line
+
+<ComponentPreview
+  name="p-flow-1"
+  align="start"
+  className="**:data-align:h-auto! **:data-align:overflow-visible!"
+/>
+
+### Check inside a path
+
+<ComponentPreview
+  name="p-flow-3"
+  align="start"
+  className="**:data-align:h-auto! **:data-align:overflow-visible!"
+/>
+
+### Runs view
+
+Status counts on steps, a paused notice, and a muted step no run has reached.
+
+<ComponentPreview
+  name="p-flow-4"
+  align="start"
+  className="**:data-align:h-auto! **:data-align:overflow-visible!"
+/>
+
+### Selected step
+
+Clicking a step selects it and shows its settings beside the flow. On narrow screens the settings open in a Drawer.
+
+<ComponentPreview
+  name="p-flow-5"
+  align="start"
+  className="**:data-align:h-auto! **:data-align:overflow-visible!"
+/>
+
+### Design view
+
+An add button on every line.
+
+<ComponentPreview
+  name="p-flow-6"
+  align="start"
+  className="**:data-align:h-auto! **:data-align:overflow-visible!"
+/>
+
+### Phone width
+
+<ComponentPreview
+  name="p-flow-7"
+  align="start"
+  className="**:data-align:h-auto! **:data-align:overflow-visible!"
+/>
+
+## API Reference
+
+### Flow
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `dots` | `boolean` | `true` | Draw the dot grid |
+| `notice` | `ReactNode` | | Shown above the first step |
+| `aria-label` | `string` | | Names the workflow list |
+| `className` | `string` | | Classes on the frame; give it a height to scroll vertically |
+
+### FlowStep
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `icon` | `ReactNode` | | Icon in the tile |
+| `kind` | `ReactNode` | | The kind of step, on one line |
+| `title` | `ReactNode` | | A plain sentence, up to two lines |
+| `tone` | `"default" \| "trigger"` | `"default"` | Tint the tile for the step that starts the flow |
+| `status` | `{ label, tone? }` | | Chip at the right edge |
+| `selected` | `boolean` | `false` | Draw a ring |
+| `muted` | `boolean` | `false` | Dim the step |
+| `onClick` | `() => void` | | Makes the card a button |
+| `render` | `ReactElement` | | Render the card as another element |
+
+### FlowConnector
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size` | `22 \| 16 \| 8` | `22` | Length of the line in pixels |
+
+### FlowAdd
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `string` | `"Add a step"` | Button name and tooltip |
+| `onClick` | `() => void` | | Called when pressed |
+
+### FlowBranch
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `string` | | The question the branch answers, usually the check's title |
+
+### FlowPath
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `ReactNode` | | Pill at the top of the path, such as "Yes" |
+
+### FlowEnd
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `ReactNode` | `"Done"` | Text in the pill |

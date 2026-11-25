@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "p-flow-7",
+  "description": "Workflow with stacked paths at phone width",
+  "registryDependencies": [
+    "@coss/flow"
+  ],
+  "files": [
+    {
+      "path": "registry/default/particles/p-flow-7.tsx",
+      "content": "import {\n  BellIcon,\n  CalendarIcon,\n  ClockIcon,\n  MailIcon,\n  SplitIcon,\n} from \"lucide-react\";\nimport {\n  Flow,\n  FlowBranch,\n  FlowConnector,\n  FlowEnd,\n  FlowPath,\n  FlowStep,\n} from \"@/registry/default/ui/flow\";\n\nexport default function Particle() {\n  return (\n    <div className=\"mx-auto w-full max-w-sm\">\n      <Flow aria-label=\"Remind people before a booking\">\n        <FlowStep\n          icon={<CalendarIcon />}\n          kind=\"Starts when\"\n          status={{ label: \"86 runs\" }}\n          title=\"A booking is made\"\n          tone=\"trigger\"\n        />\n        <FlowConnector />\n        <FlowStep\n          icon={<ClockIcon />}\n          kind=\"Wait\"\n          status={{ label: \"21 waiting\", tone: \"waiting\" }}\n          title=\"Wait until 1 day before\"\n        />\n        <FlowConnector />\n        <FlowStep\n          icon={<SplitIcon />}\n          kind=\"Check\"\n          title=\"Has the booking been confirmed?\"\n        />\n        <FlowConnector size={16} />\n        <FlowBranch label=\"Has the booking been confirmed?\">\n          <FlowPath label=\"Yes\">\n            <FlowConnector size={16} />\n            <FlowStep\n              icon={<MailIcon />}\n              kind=\"Send email\"\n              status={{ label: \"60 done\", tone: \"done\" }}\n              title=\"Send the visit details\"\n            />\n            <FlowConnector />\n            <FlowEnd>Done</FlowEnd>\n          </FlowPath>\n          <FlowPath label=\"No\">\n            <FlowConnector size={16} />\n            <FlowStep\n              icon={<BellIcon />}\n              kind=\"Notify\"\n              title=\"Ask the host to call them\"\n            />\n            <FlowConnector />\n            <FlowEnd>Done</FlowEnd>\n          </FlowPath>\n        </FlowBranch>\n      </Flow>\n    </div>\n  );\n}\n",
+      "type": "registry:block"
+    }
+  ],
+  "meta": {
+    "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-sm"
+  },
+  "categories": [
+    "flow"
+  ],
+  "type": "registry:block"
+}

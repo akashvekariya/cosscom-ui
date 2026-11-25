@@ -403,6 +403,24 @@ export const Index: Record<string, any> = {
     categories: undefined,
     meta: undefined,
   },
+  "flow": {
+    name: "flow",
+    description: "",
+    type: "registry:ui",
+    registryDependencies: ["@coss/badge","@coss/button","@coss/scroll-area","@coss/tooltip"],
+    files: [{
+      path: "registry/default/ui/flow.tsx",
+      type: "registry:ui",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/ui/flow.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
   "form": {
     name: "form",
     description: "",
@@ -10714,6 +10732,132 @@ export const Index: Record<string, any> = {
     }),
     categories: ["tooltip"],
     meta: undefined,
+  },
+  "p-flow-1": {
+    name: "p-flow-1",
+    description: "Three workflow steps joined by a line",
+    type: "registry:block",
+    registryDependencies: ["@coss/flow"],
+    files: [{
+      path: "registry/default/particles/p-flow-1.tsx",
+      type: "registry:block",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/particles/p-flow-1.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: ["flow"],
+    meta: {"className":"**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-sm"},
+  },
+  "p-flow-2": {
+    name: "p-flow-2",
+    description: "Workflow with a check that splits into Yes and No paths",
+    type: "registry:block",
+    registryDependencies: ["@coss/flow"],
+    files: [{
+      path: "registry/default/particles/p-flow-2.tsx",
+      type: "registry:block",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/particles/p-flow-2.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: ["flow"],
+    meta: {"className":"**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-2xl","colSpan":2},
+  },
+  "p-flow-3": {
+    name: "p-flow-3",
+    description: "Workflow with a check nested inside a path",
+    type: "registry:block",
+    registryDependencies: ["@coss/flow"],
+    files: [{
+      path: "registry/default/particles/p-flow-3.tsx",
+      type: "registry:block",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/particles/p-flow-3.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: ["flow"],
+    meta: {"className":"**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-4xl","colSpan":2},
+  },
+  "p-flow-4": {
+    name: "p-flow-4",
+    description: "Paused workflow showing run counts on its steps",
+    type: "registry:block",
+    registryDependencies: ["@coss/alert","@coss/flow"],
+    files: [{
+      path: "registry/default/particles/p-flow-4.tsx",
+      type: "registry:block",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/particles/p-flow-4.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: ["flow","warning"],
+    meta: {"className":"**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-2xl","colSpan":2},
+  },
+  "p-flow-5": {
+    name: "p-flow-5",
+    description: "Selected workflow step with its settings in a side panel",
+    type: "registry:block",
+    registryDependencies: ["@coss/button","@coss/card","@coss/drawer","@coss/field","@coss/flow","@coss/input","@coss/use-media-query"],
+    files: [{
+      path: "registry/default/particles/p-flow-5.tsx",
+      type: "registry:block",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/particles/p-flow-5.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: ["flow","drawer"],
+    meta: {"className":"**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-2xl","colSpan":2},
+  },
+  "p-flow-6": {
+    name: "p-flow-6",
+    description: "Workflow editor with an add button on every line",
+    type: "registry:block",
+    registryDependencies: ["@coss/flow"],
+    files: [{
+      path: "registry/default/particles/p-flow-6.tsx",
+      type: "registry:block",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/particles/p-flow-6.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: ["flow"],
+    meta: {"className":"**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-2xl","colSpan":2},
+  },
+  "p-flow-7": {
+    name: "p-flow-7",
+    description: "Workflow with stacked paths at phone width",
+    type: "registry:block",
+    registryDependencies: ["@coss/flow"],
+    files: [{
+      path: "registry/default/particles/p-flow-7.tsx",
+      type: "registry:block",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/default/particles/p-flow-7.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: ["flow"],
+    meta: {"className":"**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-sm"},
   },
   "fonts": {
     name: "fonts",

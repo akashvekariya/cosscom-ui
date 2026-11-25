@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "p-flow-1",
+  "description": "Three workflow steps joined by a line",
+  "registryDependencies": [
+    "@coss/flow"
+  ],
+  "files": [
+    {
+      "path": "registry/default/particles/p-flow-1.tsx",
+      "content": "import { MailIcon, UserPlusIcon, ZapIcon } from \"lucide-react\";\nimport { Flow, FlowConnector, FlowStep } from \"@/registry/default/ui/flow\";\n\nexport default function Particle() {\n  return (\n    <Flow aria-label=\"Welcome new sign-ups\" className=\"w-full\">\n      <FlowStep\n        icon={<ZapIcon />}\n        kind=\"Starts when\"\n        title=\"Someone signs up for the newsletter\"\n        tone=\"trigger\"\n      />\n      <FlowConnector />\n      <FlowStep\n        icon={<UserPlusIcon />}\n        kind=\"Create record\"\n        title=\"Add them to the contact list\"\n      />\n      <FlowConnector />\n      <FlowStep\n        icon={<MailIcon />}\n        kind=\"Send email\"\n        title=\"Send the welcome email\"\n      />\n    </Flow>\n  );\n}\n",
+      "type": "registry:block"
+    }
+  ],
+  "meta": {
+    "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-sm"
+  },
+  "categories": [
+    "flow"
+  ],
+  "type": "registry:block"
+}

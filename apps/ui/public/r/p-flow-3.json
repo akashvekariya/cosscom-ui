@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "p-flow-3",
+  "description": "Workflow with a check nested inside a path",
+  "registryDependencies": [
+    "@coss/flow"
+  ],
+  "files": [
+    {
+      "path": "registry/default/particles/p-flow-3.tsx",
+      "content": "import {\n  BellIcon,\n  MailIcon,\n  SplitIcon,\n  TicketIcon,\n  UserPlusIcon,\n} from \"lucide-react\";\nimport {\n  Flow,\n  FlowBranch,\n  FlowConnector,\n  FlowEnd,\n  FlowPath,\n  FlowStep,\n} from \"@/registry/default/ui/flow\";\n\nexport default function Particle() {\n  return (\n    <Flow aria-label=\"Route new support tickets\" className=\"w-full\">\n      <FlowStep\n        icon={<TicketIcon />}\n        kind=\"Starts when\"\n        title=\"A support ticket is opened\"\n        tone=\"trigger\"\n      />\n      <FlowConnector />\n      <FlowStep\n        icon={<SplitIcon />}\n        kind=\"Check\"\n        title=\"Is the customer on a paid plan?\"\n      />\n      <FlowConnector size={16} />\n      <FlowBranch label=\"Is the customer on a paid plan?\">\n        <FlowPath label=\"Yes\">\n          <FlowConnector size={16} />\n          <FlowStep\n            icon={<SplitIcon />}\n            kind=\"Check\"\n            title=\"Is the ticket marked urgent?\"\n          />\n          <FlowConnector size={16} />\n          <FlowBranch label=\"Is the ticket marked urgent?\">\n            <FlowPath label=\"Yes\">\n              <FlowConnector size={16} />\n              <FlowStep\n                icon={<BellIcon />}\n                kind=\"Notify\"\n                title=\"Page the on-call engineer\"\n              />\n              <FlowConnector />\n              <FlowEnd>Done</FlowEnd>\n            </FlowPath>\n            <FlowPath label=\"No\">\n              <FlowConnector size={16} />\n              <FlowStep\n                icon={<UserPlusIcon />}\n                kind=\"Assign\"\n                title=\"Add it to the support queue\"\n              />\n              <FlowConnector />\n              <FlowEnd>Done</FlowEnd>\n            </FlowPath>\n          </FlowBranch>\n        </FlowPath>\n        <FlowPath label=\"No\">\n          <FlowConnector size={16} />\n          <FlowStep\n            icon={<MailIcon />}\n            kind=\"Send email\"\n            title=\"Reply with help articles\"\n          />\n          <FlowConnector />\n          <FlowEnd>Done</FlowEnd>\n        </FlowPath>\n      </FlowBranch>\n    </Flow>\n  );\n}\n",
+      "type": "registry:block"
+    }
+  ],
+  "meta": {
+    "className": "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-4xl",
+    "colSpan": 2
+  },
+  "categories": [
+    "flow"
+  ],
+  "type": "registry:block"
+}

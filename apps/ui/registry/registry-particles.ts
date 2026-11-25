@@ -6028,4 +6028,101 @@ export const particles: ParticleItem[] = [
     registryDependencies: ["@coss/button", "@coss/group", "@coss/tooltip"],
     type: "registry:block",
   },
+  {
+    categories: categories("flow"),
+    description: "Three workflow steps joined by a line",
+    files: [{ path: "particles/p-flow-1.tsx", type: "registry:block" }],
+    meta: {
+      className:
+        "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-sm",
+    },
+    name: "p-flow-1",
+    registryDependencies: ["@coss/flow"],
+    type: "registry:block",
+  },
+  {
+    categories: categories("flow"),
+    description: "Workflow with a check that splits into Yes and No paths",
+    files: [{ path: "particles/p-flow-2.tsx", type: "registry:block" }],
+    meta: {
+      className:
+        "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-2xl",
+      colSpan: 2,
+    },
+    name: "p-flow-2",
+    registryDependencies: ["@coss/flow"],
+    type: "registry:block",
+  },
+  {
+    categories: categories("flow"),
+    description: "Workflow with a check nested inside a path",
+    files: [{ path: "particles/p-flow-3.tsx", type: "registry:block" }],
+    meta: {
+      className:
+        "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-4xl",
+      colSpan: 2,
+    },
+    name: "p-flow-3",
+    registryDependencies: ["@coss/flow"],
+    type: "registry:block",
+  },
+  {
+    categories: categories("flow", "warning"),
+    description: "Paused workflow showing run counts on its steps",
+    files: [{ path: "particles/p-flow-4.tsx", type: "registry:block" }],
+    meta: {
+      className:
+        "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-2xl",
+      colSpan: 2,
+    },
+    name: "p-flow-4",
+    registryDependencies: ["@coss/alert", "@coss/flow"],
+    type: "registry:block",
+  },
+  {
+    categories: categories("flow", "drawer"),
+    description: "Selected workflow step with its settings in a side panel",
+    files: [{ path: "particles/p-flow-5.tsx", type: "registry:block" }],
+    meta: {
+      className:
+        "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-2xl",
+      colSpan: 2,
+    },
+    name: "p-flow-5",
+    registryDependencies: [
+      "@coss/button",
+      "@coss/card",
+      "@coss/drawer",
+      "@coss/field",
+      "@coss/flow",
+      "@coss/input",
+      "@coss/use-media-query",
+    ],
+    type: "registry:block",
+  },
+  {
+    categories: categories("flow"),
+    description: "Workflow editor with an add button on every line",
+    files: [{ path: "particles/p-flow-6.tsx", type: "registry:block" }],
+    meta: {
+      className:
+        "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-2xl",
+      colSpan: 2,
+    },
+    name: "p-flow-6",
+    registryDependencies: ["@coss/flow"],
+    type: "registry:block",
+  },
+  {
+    categories: categories("flow"),
+    description: "Workflow with stacked paths at phone width",
+    files: [{ path: "particles/p-flow-7.tsx", type: "registry:block" }],
+    meta: {
+      className:
+        "**:data-[slot=preview]:w-full sm:**:data-[slot=preview]:max-w-sm",
+    },
+    name: "p-flow-7",
+    registryDependencies: ["@coss/flow"],
+    type: "registry:block",
+  },
 ];

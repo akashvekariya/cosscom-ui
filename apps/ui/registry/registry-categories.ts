@@ -32,6 +32,7 @@ export const registryCategories = [
   "empty state",
   "field",
   "fieldset",
+  "flow",
   "form",
   "frame",
   "group",

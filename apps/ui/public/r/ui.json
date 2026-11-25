@@ -24,6 +24,7 @@
     "@coss/empty",
     "@coss/field",
     "@coss/fieldset",
+    "@coss/flow",
     "@coss/form",
     "@coss/frame",
     "@coss/group",
